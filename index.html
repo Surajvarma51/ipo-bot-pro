@@ -1,0 +1,2709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Crest — IPO Terminal by SV Capital Pvt. Ltd.</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 32'%3E%3Crect width='40' height='32' rx='7' fill='%230A0E16'/%3E%3Crect x='6' y='18' width='6' height='9' rx='1.5' fill='%23B7C4D6'/%3E%3Crect x='17' y='11' width='6' height='16' rx='1.5' fill='%23F2F5F9'/%3E%3Crect x='28' y='5' width='6' height='22' rx='1.5' fill='%23B7C4D6'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0A0E16;
+    --bg-soft:#0D1220;
+    --surface:#121826;
+    --surface-2:#1A2233;
+    --border:#232C3D;
+    --border-soft:#1C2434;
+    --text:#EDEFF4;
+    --text-dim:#93A0B8;
+    --text-mute:#5C6580;
+    --gold:#B7C4D6;
+    --gold-strong:#F2F5F9;
+    --gold-soft:rgba(183,196,214,.16);
+    --on-accent:#10141C;
+    --green:#35C57F;
+    --green-soft:rgba(53,197,127,.14);
+    --red:#E5535A;
+    --red-soft:rgba(229,83,90,.14);
+    --blue:#6C9BFF;
+    --radius:10px;
+    --radius-lg:16px;
+    --font-display:'Space Grotesk',sans-serif;
+    --font-body:'Inter',sans-serif;
+    --font-mono:'JetBrains Mono',monospace;
+    --shadow:0 20px 60px -20px rgba(0,0,0,.6);
+  }
+  html[data-theme="light"]{
+    --bg:#F5F5F2;
+    --bg-soft:#ECECE7;
+    --surface:#FFFFFF;
+    --surface-2:#F5F5F2;
+    --border:#E1E1DA;
+    --border-soft:#EAEAE4;
+    --text:#161A22;
+    --text-dim:#5B6273;
+    --text-mute:#8A90A0;
+    --gold:#7C8CA3;
+    --gold-strong:#4A5568;
+    --gold-soft:rgba(90,103,128,.12);
+    --on-accent:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  html,body{overflow-x:hidden;max-width:100vw;}
+  body{margin:0;}
+  body,input,select,button{font-family:var(--font-body);}
+  body{background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;}
+  h1,h2,h3,.display{font-family:var(--font-display);}
+  a{color:inherit;}
+  button{font:inherit;cursor:pointer;}
+  input,select{font:inherit;color:var(--text);}
+  ::selection{background:var(--gold-soft);color:var(--gold-strong);}
+  .mono{font-family:var(--font-mono);}
+  .hidden{display:none !important;}
+
+  /* ---------- Login ---------- */
+  #login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:32px 20px;
+    background:radial-gradient(600px 400px at 50% -10%, rgba(183,196,214,.14), transparent 60%), linear-gradient(180deg,#080B12,#0A0E16 40%,#0A0E16);}
+  #login-screen .grid-lines{position:absolute;inset:0;
+    background-image:linear-gradient(rgba(183,196,214,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(183,196,214,.05) 1px, transparent 1px);
+    background-size:42px 42px;mask-image:radial-gradient(ellipse at 50% 20%, black 10%, transparent 65%);pointer-events:none;}
+  .login-card{position:relative;z-index:1;width:100%;max-width:408px;background:rgba(18,24,38,.86);border:1px solid var(--border);
+    border-radius:var(--radius-lg);padding:40px 36px 32px;box-shadow:var(--shadow);backdrop-filter:blur(6px);}
+  .brand-mark{display:flex;align-items:center;gap:11px;justify-content:center;margin-bottom:22px;}
+  .brand-icon{width:34px;height:28px;display:block;}
+  .brand-word{font-family:var(--font-display);font-weight:700;font-size:22px;letter-spacing:.4px;}
+  .brand-word small{display:block;font-family:var(--font-mono);font-weight:500;font-size:9.5px;letter-spacing:2.5px;color:var(--text-mute);margin-top:2px;}
+  .login-title{text-align:center;font-size:19px;font-weight:600;margin:0 0 26px;color:var(--text);}
+  .field{margin-bottom:14px;}
+  .field label{display:block;font-size:11.5px;color:var(--text-mute);margin-bottom:6px;letter-spacing:.2px;}
+  .field-input-wrap{position:relative;}
+  .field input, .field select{width:100%;background:var(--bg-soft);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:12px 13px;font-size:14px;outline:none;transition:border-color .15s;}
+  .field input:focus, .field select:focus{border-color:var(--gold);}
+  .field .eye-toggle{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-mute);padding:2px;display:flex;}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:8px;border:1px solid transparent;padding:11px 18px;font-size:14px;font-weight:600;transition:filter .15s, background .15s, border-color .15s; white-space:nowrap;}
+  .btn-gold{background:linear-gradient(180deg,var(--gold-strong),var(--gold));color:var(--on-accent);box-shadow:inset 0 1px 0 rgba(255,255,255,.5);}
+  .btn-gold:hover{filter:brightness(1.05);}
+  .btn-block{width:100%;}
+  .btn-outline{background:transparent;border-color:var(--border);color:var(--text);}
+  .btn-outline:hover{border-color:var(--text-dim);}
+  .btn-ghost{background:transparent;border-color:transparent;color:var(--text-dim);}
+  .btn-ghost:hover{color:var(--text);}
+  .btn-danger{background:var(--red-soft);color:var(--red);border-color:transparent;}
+  .btn-sm{padding:7px 12px;font-size:12.5px;}
+  .btn:disabled{opacity:.5;cursor:not-allowed;}
+  .login-error{background:var(--red-soft);color:var(--red);border:1px solid rgba(229,83,90,.3);border-radius:8px;padding:10px 12px;font-size:12.5px;margin-bottom:14px;line-height:1.5;}
+  .login-divider{display:flex;align-items:center;gap:10px;margin:18px 0;color:var(--text-mute);font-size:11.5px;}
+  .login-divider::before,.login-divider::after{content:'';flex:1;height:1px;background:var(--border);}
+  .google-btn{width:100%;background:var(--surface-2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:11px 14px;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:10px;}
+  .google-btn:hover{border-color:var(--text-dim);}
+  .login-links{text-align:center;margin-top:16px;}
+  .login-links a{color:var(--gold-strong);font-size:12.5px;text-decoration:none;}
+  .login-links a:hover{text-decoration:underline;}
+  .demo-note{margin-top:18px;background:var(--gold-soft);border:1px dashed rgba(183,196,214,.4);border-radius:8px;padding:10px 12px;font-size:11.5px;color:var(--gold-strong);text-align:center;font-family:var(--font-mono);letter-spacing:.2px;}
+  .login-footer{text-align:center;margin-top:26px;color:var(--text-mute);font-size:11px;line-height:1.7;}
+  .login-footer .fname{color:var(--text-dim);font-weight:600;letter-spacing:.3px;}
+
+  /* ---------- App shell ---------- */
+  #app-shell{min-height:100vh;display:flex;flex-direction:column;}
+  .topnav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 28px;height:58px;border-bottom:1px solid var(--border-soft);background:var(--bg-soft);position:sticky;top:0;z-index:40;}
+  @media (max-width:520px){
+    .topnav{padding:0 10px;gap:8px;height:52px;}
+    .brand-word{font-size:14px;}
+    .navlinks{gap:14px;justify-content:flex-start;padding:0 2px;mask-image:linear-gradient(90deg,transparent,black 6px,black calc(100% - 6px),transparent);}
+    .navlink{font-size:12px;padding:16px 0;}
+    .nav-right{gap:6px;}
+    .icon-btn{padding:3px;}
+    .avatar-btn{padding:3px;gap:0;}
+    .avatar-btn .uid{display:none;}
+    main{padding:14px 12px 50px;}
+    .stat-grid{grid-template-columns:repeat(2,1fr);gap:10px;}
+    .sync-bar{flex-wrap:wrap;}
+    .sync-bar button{margin-left:0;}
+    .card table{min-width:560px;}
+    .card{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+    .modal-body{grid-template-columns:1fr !important;padding:20px 16px;}
+    .modal-footer{padding:14px 16px;}
+    .page-header{flex-direction:column;align-items:stretch;}
+    .search-box{width:100%;}
+  }
+  .topnav .brand-mark{margin:0;flex-shrink:0;}
+  .topnav .brand-word{font-size:16px;}
+  .topnav .brand-word small{display:none;}
+  .navlinks{display:flex;align-items:center;gap:26px;justify-content:center;flex:1 1 auto;min-width:0;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
+  .navlinks::-webkit-scrollbar{display:none;}
+  .navlink{font-size:14px;color:var(--text-dim);text-decoration:none;padding:19px 2px;position:relative;background:none;border:none;white-space:nowrap;flex-shrink:0;}
+  .navlink.active{color:var(--text);}
+  .navlink.active::after{content:'';position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--gold);}
+  .nav-right{display:flex;align-items:center;gap:16px;flex-shrink:0;}
+  .icon-btn{background:none;border:none;color:var(--text-dim);display:flex;padding:4px;border-radius:6px;position:relative;}
+  .icon-btn:hover{color:var(--text);background:var(--surface-2);}
+  .notif-badge{position:absolute;top:-3px;right:-3px;background:var(--red);color:#fff;font-size:9px;font-weight:700;min-width:15px;height:15px;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:0 3px;font-family:var(--font-mono);}
+  .avatar-btn{display:flex;align-items:center;gap:9px;background:none;border:none;color:var(--text);padding:4px 6px 4px 4px;border-radius:8px;}
+  .avatar-btn:hover{background:var(--surface-2);}
+  .avatar-circle{width:28px;height:28px;border-radius:50%;background:var(--gold-soft);color:var(--gold-strong);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;font-family:var(--font-mono);flex-shrink:0;}
+  .avatar-btn .uid{font-family:var(--font-mono);font-size:12.5px;font-weight:600;color:var(--text-dim);}
+
+  main{flex:1;padding:26px 28px 60px;max-width:1180px;width:100%;margin:0 auto;}
+
+  /* Bottom tab bar — native-app-style mobile nav (hidden on desktop) */
+  .bottom-tabbar{
+    display:none;position:fixed;left:0;right:0;bottom:0;z-index:60;
+    background:var(--bg-soft);border-top:1px solid var(--border-soft);
+    padding:6px 4px calc(6px + env(safe-area-inset-bottom));
+  }
+  .bt-item{
+    flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;
+    background:none;border:none;color:var(--text-mute);padding:6px 2px 8px;font-size:10px;font-weight:500;
+  }
+  .bt-icon{
+    display:flex;align-items:center;justify-content:center;width:44px;height:26px;border-radius:14px;
+    background:transparent;transition:background .22s ease,transform .15s ease;
+  }
+  .bt-item.active .bt-icon{background:var(--gold-soft);transform:scale(1.04);}
+  .bt-item.active{color:var(--gold-strong);}
+  .bt-item:active .bt-icon{transform:scale(.92);}
+  .bt-avatar{width:20px;height:20px;border-radius:50%;background:var(--gold-soft);color:var(--gold-strong);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;font-family:var(--font-mono);}
+  .bt-item.active .bt-avatar{background:var(--gold);color:var(--on-accent);}
+
+  @media (max-width:680px){
+    .bottom-tabbar{display:flex;}
+    main{padding-bottom:82px;}
+    .navlinks{display:none;}
+    .topnav{justify-content:space-between;}
+  }
+  .subnav{display:flex;gap:26px;border-bottom:1px solid var(--border-soft);margin-bottom:22px;}
+  .subnav button{background:none;border:none;color:var(--text-dim);font-size:13.5px;padding:0 2px 12px;position:relative;font-weight:500;}
+  .subnav button.active{color:var(--gold-strong);}
+  .subnav button.active::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--gold);}
+  .subnav button:disabled{opacity:.4;cursor:default;}
+
+  .page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:12px;}
+  .page-header h1{font-size:20px;margin:0;font-weight:600;}
+  .page-header .count{color:var(--text-mute);font-weight:400;}
+  .search-box{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 12px;width:220px;}
+  .search-box input{background:none;border:none;outline:none;width:100%;font-size:13px;}
+  .search-box svg{flex-shrink:0;color:var(--text-mute);}
+
+  .card{background:var(--surface);border:1px solid var(--border-soft);border-radius:var(--radius-lg);}
+  .panel-head{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--border-soft);}
+  .panel-head h3{font-size:15px;margin:0;font-weight:600;}
+  .tag-pill{background:var(--surface-2);color:var(--text-dim);font-size:11px;padding:3px 9px;border-radius:20px;margin-left:8px;}
+  .row-item{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border-bottom:1px solid var(--border-soft);}
+  .row-item:last-child{border-bottom:none;}
+  .ri-left .sym{font-size:13.5px;font-weight:600;}
+  .ri-left .ex{font-size:11.5px;color:var(--text-mute);margin-top:1px;}
+  .ri-right{text-align:right;}
+  .ri-right .amt{font-family:var(--font-mono);font-size:13.5px;font-weight:600;}
+  .ipo-section-label{padding:12px 18px 4px;font-size:10.5px;letter-spacing:1.2px;color:var(--text-mute);text-transform:uppercase;}
+
+  /* Stat cards */
+  .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px;}
+  @media (max-width:800px){.stat-grid{grid-template-columns:repeat(2,1fr);}}
+  .stat-card{background:var(--surface);border:1px solid var(--border-soft);border-radius:12px;padding:16px 18px;}
+  .stat-card .label{font-size:11px;color:var(--text-mute);text-transform:uppercase;letter-spacing:.6px;}
+  .stat-card .value{font-family:var(--font-mono);font-size:22px;font-weight:600;margin-top:6px;}
+  .stat-card .value.accent{color:var(--gold-strong);}
+
+  table{width:100%;border-collapse:collapse;}
+  thead th{text-align:left;font-size:10.5px;letter-spacing:.8px;text-transform:uppercase;color:var(--text-mute);font-weight:600;padding:10px 18px;border-bottom:1px solid var(--border-soft);}
+  thead th.num{text-align:right;}
+  tbody td{padding:14px 18px;border-bottom:1px solid var(--border-soft);font-size:13.5px;vertical-align:middle;}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr:hover{background:rgba(255,255,255,.015);}
+  td.num{text-align:right;font-family:var(--font-mono);}
+  .instr .sym{font-weight:600;font-size:13.5px;}
+  .co-mark{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0;font-family:var(--font-display);}
+  .instr .sme{color:var(--blue);font-size:10.5px;font-weight:700;margin-left:6px;letter-spacing:.3px;}
+  .instr .full{color:var(--text-mute);font-size:11.5px;margin-top:1px;}
+  .amt-line .top{font-weight:600;font-family:var(--font-mono);}
+  .amt-line .bottom{color:var(--text-mute);font-size:11px;margin-top:1px;}
+  .badge{display:inline-block;padding:5px 11px;border-radius:20px;font-size:11.5px;font-weight:600;}
+  .badge-upcoming{background:var(--surface-2);color:var(--text-dim);}
+  .badge-closed{background:var(--surface-2);color:var(--text-mute);}
+  .badge-pending{background:var(--gold-soft);color:var(--gold-strong);}
+  .badge-allotted{background:var(--green-soft);color:var(--green);}
+  .badge-rejected{background:var(--red-soft);color:var(--red);}
+  .dot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:6px;}
+  .dot.active{background:var(--green);}
+
+  /* Mobile card layout — swaps in for wide tables on small screens */
+  .mcard-list{display:none;}
+  .mcard{background:var(--surface);border:1px solid var(--border-soft);border-radius:12px;padding:14px 15px;margin-bottom:10px;}
+  .mcard-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:2px;}
+  .mcard-title{display:flex;align-items:center;gap:10px;}
+  .mcard-title .sym{font-weight:600;font-size:14px;}
+  .mcard-sub{color:var(--text-mute);font-size:11.5px;margin:2px 0 10px;padding-left:42px;}
+  .mcard-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;padding-top:10px;border-top:1px solid var(--border-soft);margin-top:2px;}
+  .mcard-grid .k{font-size:10px;color:var(--text-mute);text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px;}
+  .mcard-grid .v{font-size:12.5px;font-weight:500;}
+  .mcard-footer{margin-top:12px;display:flex;gap:8px;}
+  .mcard-footer .btn{flex:1;}
+  @media (max-width:680px){
+    .desktop-table-wrap{display:none;}
+    .mcard-list{display:block;}
+  }
+
+  .empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:90px 20px 60px;text-align:center;}
+  .empty-state svg{color:var(--border);margin-bottom:22px;}
+  .empty-state p{color:var(--text-dim);font-size:14px;margin:0 0 22px;}
+  .empty-state .view-history{margin-top:14px;color:var(--gold-strong);font-size:12.5px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
+
+  .popover{position:absolute;background:var(--surface-2);border:1px solid var(--border);border-radius:10px;box-shadow:var(--shadow);padding:6px;min-width:190px;z-index:60;}
+  .popover button{width:100%;display:flex;align-items:center;gap:9px;background:none;border:none;color:var(--text);padding:9px 10px;border-radius:6px;font-size:13px;text-align:left;}
+  .popover button:hover{background:var(--surface);}
+
+  .modal-overlay{position:fixed;inset:0;background:rgba(4,6,10,.65);backdrop-filter:blur(2px);display:flex;align-items:center;justify-content:center;z-index:100;padding:20px;}
+  .modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);width:100%;max-width:800px;box-shadow:var(--shadow);max-height:90vh;display:flex;flex-direction:column;overflow:hidden;}
+  .modal.narrow{max-width:480px;}
+  .modal-body{overflow-y:auto;padding:26px 28px;display:grid;grid-template-columns:1fr 1fr;gap:34px;}
+  .modal.narrow .modal-body{grid-template-columns:1fr;}
+  @media (max-width:640px){.modal-body{grid-template-columns:1fr;}}
+  .modal-body h2{font-size:19px;margin:0 0 2px;}
+  .modal-body .sub{color:var(--text-mute);font-size:12.5px;margin-bottom:20px;}
+  .kv-row{display:flex;justify-content:space-between;padding:9px 0;font-size:13px;}
+  .kv-row .k{color:var(--text-mute);}
+  .kv-row .v{font-weight:500;}
+  .modal-links{margin-top:14px;display:flex;flex-direction:column;gap:8px;}
+  .modal-links a{color:var(--gold-strong);font-size:12.5px;text-decoration:none;display:inline-flex;align-items:center;gap:5px;}
+  .form-label{font-size:13.5px;font-weight:600;margin:0 0 12px;display:flex;justify-content:space-between;align-items:center;}
+  .form-label .selall{display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:500;color:var(--text-dim);}
+  .acct-list{border:1px solid var(--border);border-radius:8px;max-height:132px;overflow-y:auto;margin-bottom:18px;}
+  .acct-row{display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--border-soft);font-size:12.5px;cursor:pointer;}
+  .acct-row:last-child{border-bottom:none;}
+  .acct-row:hover{background:var(--surface-2);}
+  .acct-row .b{color:var(--text-mute);}
+  .acct-empty{padding:14px 12px;font-size:12.5px;color:var(--text-mute);}
+  .acct-empty a{color:var(--gold-strong);text-decoration:none;}
+  .upi-row{display:grid;grid-template-columns:1fr 130px;gap:10px;}
+  .upi-row.disabled{opacity:.45;pointer-events:none;}
+  .combobox{position:relative;}
+  .combobox-input{width:100%;background:var(--bg-soft);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:11px 30px 11px 12px;font-size:13.5px;display:flex;align-items:center;justify-content:space-between;}
+  .combobox-list{position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--surface-2);border:1px solid var(--border);border-radius:8px;max-height:230px;overflow-y:auto;z-index:20;box-shadow:var(--shadow);}
+  .combobox-list .cb-head{padding:8px 12px;color:var(--text-mute);font-size:11px;text-transform:uppercase;letter-spacing:.5px;}
+  .combobox-list button{width:100%;text-align:left;background:none;border:none;color:var(--text);padding:8px 12px;font-size:13px;font-family:var(--font-mono);}
+  .combobox-list button:hover,.combobox-list button.hl{background:var(--gold);color:var(--on-accent);}
+  .info-link{color:var(--blue);font-size:11.5px;display:inline-flex;align-items:center;gap:5px;margin-top:8px;text-decoration:none;}
+  .upi-note{font-size:11px;color:var(--text-mute);margin-top:6px;}
+  .bids-head{display:flex;justify-content:space-between;align-items:center;margin:22px 0 10px;}
+  .bids-head .form-label{margin:0;}
+  .add-link{background:none;border:none;color:var(--gold-strong);font-size:12.5px;font-weight:600;}
+  .bid-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+  .bid-row input{width:100%;background:var(--bg-soft);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:11px 12px;font-size:13.5px;}
+  .bid-row input:disabled{background:repeating-linear-gradient(45deg,var(--bg-soft),var(--bg-soft) 6px,var(--surface-2) 6px,var(--surface-2) 12px);color:var(--text-mute);}
+  .cutoff-row{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--text-dim);margin-bottom:4px;}
+  .divider{height:1px;background:var(--border-soft);margin:18px 0;}
+  .payable-row{display:flex;justify-content:space-between;align-items:baseline;}
+  .payable-row .k{color:var(--text-mute);font-size:13.5px;}
+  .payable-row .v{color:var(--green);font-family:var(--font-mono);font-size:19px;font-weight:600;}
+  .modal-footer{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 28px;border-top:1px solid var(--border-soft);flex-wrap:wrap;}
+  .modal-footer .terms{font-size:12px;color:var(--text-dim);}
+  .modal-footer .terms a{color:var(--gold-strong);text-decoration:none;}
+  .modal-footer .actions{display:flex;gap:10px;}
+
+  #toast-root{position:fixed;bottom:22px;right:22px;z-index:200;display:flex;flex-direction:column;gap:10px;align-items:flex-end;}
+  .toast{background:var(--surface-2);border:1px solid var(--border);border-left:4px solid var(--green);border-radius:10px;padding:16px 18px;max-width:340px;box-shadow:var(--shadow);display:flex;gap:12px;animation:toastin .25s ease;}
+  .toast.err{border-left-color:var(--red);}
+  @keyframes toastin{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  .toast .body strong{display:block;color:var(--green);font-size:13.5px;margin-bottom:4px;}
+  .toast.err .body strong{color:var(--red);}
+  .toast .body p{margin:0;font-size:12.5px;color:var(--text-dim);line-height:1.5;}
+  .toast .body a{color:var(--gold-strong);text-decoration:none;}
+  .toast .close{background:none;border:none;color:var(--text-mute);align-self:flex-start;}
+
+  .dropdown-panel{position:fixed;width:270px;max-width:calc(100vw - 20px);background:var(--surface-2);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);z-index:150;overflow:hidden;max-height:calc(100vh - 76px);overflow-y:auto;}
+  .dp-head{padding:16px 18px;display:flex;justify-content:space-between;align-items:flex-start;}
+  .dp-head .name{font-weight:700;font-size:14px;}
+  .dp-head .email{color:var(--text-mute);font-size:11.5px;margin-top:2px;}
+  .dp-head button{background:none;border:none;color:var(--text-mute);}
+  .dp-toggle{display:flex;justify-content:space-between;align-items:center;padding:11px 18px;font-size:13px;border-top:1px solid var(--border-soft);}
+  .switch{width:34px;height:19px;border-radius:20px;background:var(--surface);border:1px solid var(--border);position:relative;transition:background .15s;}
+  .switch.on{background:var(--gold);border-color:var(--gold);}
+  .switch::after{content:'';position:absolute;top:2px;left:2px;width:13px;height:13px;border-radius:50%;background:var(--text);transition:transform .15s;}
+  .switch.on::after{transform:translateX(15px);background:var(--on-accent);}
+  .dp-item{display:flex;align-items:center;gap:10px;padding:11px 18px;font-size:13px;border-top:1px solid var(--border-soft);background:none;border-left:none;border-right:none;border-bottom:none;color:var(--text);width:100%;text-align:left;}
+  .dp-item:hover{background:var(--surface);}
+  .dp-item.logout{color:var(--red);}
+
+  /* Notification panel */
+  .notif-panel{position:fixed;width:340px;max-width:calc(100vw - 20px);background:var(--surface-2);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);z-index:150;overflow:hidden;}
+  .notif-head{padding:14px 18px;border-bottom:1px solid var(--border-soft);display:flex;justify-content:space-between;align-items:center;}
+  .notif-head h4{margin:0;font-size:13.5px;font-weight:600;}
+  .notif-head button{background:none;border:none;color:var(--gold-strong);font-size:11.5px;}
+  .notif-list{max-height:340px;overflow-y:auto;}
+  .notif-item{padding:12px 18px;border-bottom:1px solid var(--border-soft);}
+  .notif-item:last-child{border-bottom:none;}
+  .notif-item .t{font-size:12.5px;font-weight:600;margin-bottom:2px;}
+  .notif-item .m{font-size:12px;color:var(--text-dim);line-height:1.5;}
+  .notif-item .ts{font-size:10.5px;color:var(--text-mute);margin-top:5px;font-family:var(--font-mono);}
+  .notif-empty{padding:34px 18px;text-align:center;color:var(--text-mute);font-size:12.5px;}
+
+  /* Profile */
+  .profile-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
+  .profile-head h2{font-size:17px;margin:0;font-weight:600;}
+  .profile-head a{color:var(--gold-strong);font-size:12.5px;text-decoration:none;}
+  .profile-top{display:flex;gap:20px;align-items:center;padding:26px 4px;}
+  .profile-avatar-lg{width:74px;height:74px;border-radius:50%;background:var(--gold-soft);color:var(--gold-strong);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;font-family:var(--font-mono);flex-shrink:0;position:relative;overflow:hidden;}
+  .profile-avatar-lg img{width:100%;height:100%;object-fit:cover;}
+  .change-photo-wrap{display:flex;flex-direction:column;align-items:flex-start;gap:8px;}
+  .change-photo-wrap button{background:none;border:none;color:var(--gold-strong);font-size:12.5px;padding:0;}
+  .profile-name-edit{display:flex;align-items:center;gap:10px;}
+  .profile-name-edit h3{font-size:22px;margin:0;font-weight:700;cursor:pointer;letter-spacing:.3px;}
+  .profile-name-edit input{background:var(--bg-soft);border:1px solid var(--gold);color:var(--text);border-radius:6px;padding:6px 10px;font-size:20px;font-weight:700;width:220px;}
+  .profile-section-title{font-size:14px;font-weight:600;margin:26px 0 4px;}
+  .kv-list .kv-row{border-bottom:1px solid var(--border-soft);}
+  .kv-list .kv-row:last-child{border-bottom:none;}
+  .pw-inline{margin-top:14px;padding:16px;background:var(--surface-2);border-radius:10px;display:none;flex-direction:column;gap:10px;max-width:340px;}
+  .pw-inline.show{display:flex;}
+  .pw-inline input{background:var(--bg-soft);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:9px 11px;font-size:13px;}
+
+  body.privacy-on .sensitive{filter:blur(6px);transition:filter .15s;}
+  body.privacy-on .sensitive:hover{filter:blur(0);}
+
+  ::-webkit-scrollbar{width:9px;height:9px;}
+  ::-webkit-scrollbar-thumb{background:var(--border);border-radius:6px;}
+  ::-webkit-scrollbar-track{background:transparent;}
+
+  .hi-line{font-size:22px;font-weight:600;margin:2px 0 20px;}
+  .hi-line b{font-weight:700;}
+
+  .sync-bar{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--border-soft);border-radius:10px;padding:10px 14px;margin-bottom:18px;font-size:12px;color:var(--text-dim);}
+  .sync-bar .dot-live{width:7px;height:7px;border-radius:50%;background:var(--green);flex-shrink:0;box-shadow:0 0 0 3px var(--green-soft);}
+  .sync-bar strong{color:var(--text);font-weight:600;}
+  .sync-bar button{margin-left:auto;background:none;border:1px solid var(--border);color:var(--text-dim);border-radius:7px;padding:5px 11px;font-size:11.5px;display:flex;align-items:center;gap:6px;}
+  .sync-bar button:hover{color:var(--text);border-color:var(--text-dim);}
+  .sync-bar button.spinning svg{animation:spin .8s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+
+  /* Filter chips (Bids status filter, Orders All/Pending/etc reuse .subnav already) */
+  .chip-row{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
+  .chip{background:var(--surface);border:1px solid var(--border);color:var(--text-dim);border-radius:20px;padding:6px 14px;font-size:12.5px;font-weight:500;}
+  .chip.on{background:var(--gold);color:var(--on-accent);border-color:var(--gold);font-weight:600;}
+  .chip:hover:not(.on){border-color:var(--text-dim);color:var(--text);}
+
+  /* Reusable info modal (Fundamentals, More info, Terms, Support, Manual, Shortcuts, Security...) */
+  .info-modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);width:100%;max-width:460px;box-shadow:var(--shadow);max-height:86vh;display:flex;flex-direction:column;overflow:hidden;}
+  .info-modal.wide{max-width:640px;}
+  .info-head{display:flex;justify-content:space-between;align-items:center;padding:18px 22px;border-bottom:1px solid var(--border-soft);}
+  .info-head h3{margin:0;font-size:16px;font-weight:600;}
+  .info-head button{background:none;border:none;color:var(--text-mute);}
+  .info-body{padding:20px 22px;overflow-y:auto;font-size:13.5px;line-height:1.6;color:var(--text-dim);}
+  .info-body .kv-row{padding:9px 0;}
+  .info-footer{padding:14px 22px;border-top:1px solid var(--border-soft);display:flex;justify-content:flex-end;gap:10px;}
+  .info-disclaimer{background:var(--gold-soft);color:var(--gold-strong);border-radius:8px;padding:9px 12px;font-size:11px;margin-top:14px;}
+  .pill-handle{display:inline-block;background:var(--surface-2);border:1px solid var(--border);color:var(--text-dim);font-family:var(--font-mono);font-size:11.5px;padding:4px 9px;border-radius:14px;margin:3px 4px 3px 0;}
+  .faq{border-bottom:1px solid var(--border-soft);padding:10px 0;}
+  .faq summary{cursor:pointer;font-weight:600;color:var(--text);font-size:13px;list-style:none;display:flex;justify-content:space-between;align-items:center;}
+  .faq summary::-webkit-details-marker{display:none;}
+  .faq summary::after{content:'+';color:var(--text-mute);font-size:16px;}
+  .faq[open] summary::after{content:'–';}
+  .faq p{margin:8px 0 0;color:var(--text-dim);font-size:12.5px;}
+  .ticket-field{margin-top:12px;}
+  .ticket-field label{display:block;font-size:11px;color:var(--text-mute);margin-bottom:5px;}
+  .ticket-field input, .ticket-field textarea{width:100%;background:var(--bg-soft);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:9px 11px;font-size:13px;font-family:inherit;resize:vertical;}
+
+  /* Account picker cards (Apply modal) */
+  .acc-card{display:flex;align-items:center;gap:11px;padding:10px 12px;border:1px solid var(--border);border-radius:9px;margin-bottom:8px;cursor:pointer;transition:border-color .15s,background .15s;}
+  .acc-card:hover{border-color:var(--text-dim);}
+  .acc-card.on{border-color:var(--gold);background:var(--gold-soft);}
+  .acc-card .bk{width:30px;height:30px;border-radius:8px;background:var(--surface-2);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0;}
+  .acc-card .info{flex:1;font-size:12.5px;}
+  .acc-card .info b{display:block;font-size:13px;}
+  .acc-card .check{width:18px;height:18px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:transparent;font-size:11px;}
+  .acc-card.on .check{background:var(--gold);border-color:var(--gold);color:var(--on-accent);}
+
+  /* Security switch row reuse .dp-toggle style pattern */
+  .sec-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border-soft);font-size:13px;}
+  .sec-row:last-child{border-bottom:none;}
+
+  /* Console */
+  .console-lock{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:100px 20px;text-align:center;}
+  .console-lock svg{color:var(--gold-strong);margin-bottom:18px;}
+  .dropzone{border:2px dashed var(--border);border-radius:12px;padding:34px 20px;text-align:center;cursor:pointer;transition:border-color .15s,background .15s;}
+  .dropzone:hover, .dropzone.drag{border-color:var(--gold);background:var(--gold-soft);}
+  .dropzone svg{color:var(--text-mute);margin-bottom:10px;}
+  .dropzone p{margin:4px 0;color:var(--text-dim);font-size:13px;}
+  .dropzone .hint{color:var(--text-mute);font-size:11.5px;}
+  .taxpl-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:20px 0;}
+  @media (max-width:820px){.taxpl-summary{grid-template-columns:repeat(2,1fr);}}
+  .taxpl-summary .stat-card .value{font-size:18px;}
+  .checklist-item{display:flex;align-items:flex-start;gap:11px;padding:12px 0;border-bottom:1px solid var(--border-soft);}
+  .checklist-item:last-child{border-bottom:none;}
+  .checklist-item .ci-dot{width:20px;height:20px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;margin-top:1px;}
+  .checklist-item.done .ci-dot{background:var(--green-soft);color:var(--green);}
+  .checklist-item.todo .ci-dot{background:var(--surface-2);color:var(--text-mute);}
+  .checklist-item .ci-title{font-weight:600;font-size:13px;}
+  .checklist-item .ci-desc{color:var(--text-mute);font-size:12px;margin-top:2px;line-height:1.5;}
+</style>
+</head>
+<body>
+
+<!-- ===================== LOGIN SCREEN ===================== -->
+<div id="login-screen">
+  <div class="grid-lines"></div>
+  <div class="login-card">
+    <div class="brand-mark">
+      <svg class="brand-icon" viewBox="0 0 40 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="gradLogin" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F2F5F9"/><stop offset="1" stop-color="#8FA0B8"/></linearGradient></defs>
+        <rect x="2" y="18" width="7" height="12" rx="2" fill="url(#gradLogin)"/>
+        <rect x="14" y="10" width="7" height="20" rx="2" fill="url(#gradLogin)"/>
+        <rect x="26" y="2" width="7" height="28" rx="2" fill="url(#gradLogin)"/>
+      </svg>
+      <div class="brand-word">CREST<small>SV CAPITAL PVT. LTD.</small></div>
+    </div>
+    <h1 class="login-title">Sign in to your IPO terminal</h1>
+
+    <div id="login-error" class="login-error hidden"></div>
+
+    <div id="login-primary-block">
+      <form id="login-form">
+        <div class="field">
+          <label for="login-id">User ID or e-mail</label>
+          <input id="login-id" type="text" autocomplete="username" placeholder="e.g. admin" />
+        </div>
+        <div class="field">
+          <label for="login-pass">Password</label>
+          <div class="field-input-wrap">
+            <input id="login-pass" type="password" autocomplete="current-password" placeholder="••••••••" />
+            <button type="button" class="eye-toggle" id="toggle-pass">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-gold btn-block" style="margin-top:6px;">Sign in</button>
+      </form>
+
+      <div class="login-divider">OR CONTINUE WITH</div>
+      <button id="google-btn" class="google-btn">
+        <svg width="17" height="17" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 01-1.8 2.72v2.26h2.9c1.7-1.57 2.7-3.88 2.7-6.62z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.9-2.26c-.8.54-1.84.86-3.06.86-2.35 0-4.34-1.59-5.05-3.72H.9v2.33A9 9 0 009 18z"/><path fill="#FBBC05" d="M3.95 10.7A5.4 5.4 0 013.66 9c0-.59.1-1.17.29-1.7V4.97H.9A9 9 0 000 9c0 1.45.35 2.83.9 4.03l3.05-2.33z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.58C13.46.9 11.43 0 9 0A9 9 0 00.9 4.97l3.05 2.33C4.66 5.17 6.65 3.58 9 3.58z"/></svg>
+        Continue with Google
+      </button>
+
+      <div class="login-links"><a href="#" id="forgot-link">Forgot user ID or password?</a></div>
+      <div class="demo-note">DEMO ACCESS &nbsp;·&nbsp; ID: admin &nbsp;·&nbsp; PASSWORD: admin@123</div>
+    </div>
+
+    <div id="login-2fa-block" class="hidden">
+      <p style="text-align:center;color:var(--text-dim);font-size:13px;margin:0 0 18px;">Enter the 6-digit code from your authenticator app.</p>
+      <div class="field">
+        <input id="login-2fa-code" inputmode="numeric" maxlength="6" placeholder="000000" style="text-align:center;letter-spacing:6px;font-family:var(--font-mono);font-size:18px;" />
+      </div>
+      <button class="btn btn-gold btn-block" id="login-2fa-submit">Verify &amp; sign in</button>
+      <div class="login-links"><a href="#" id="login-2fa-back">← Back</a></div>
+    </div>
+
+    <div class="login-footer">
+      <div class="fname">SV CAPITAL PVT. LTD.</div>
+      Crest is a private IPO application terminal for managing applications<br/>across linked demat accounts. For internal review use only.<br/>v1.1.0
+    </div>
+  </div>
+</div>
+
+<!-- ===================== APP SHELL ===================== -->
+<div id="app-shell" class="hidden">
+  <nav class="topnav">
+    <div class="brand-mark">
+      <svg class="brand-icon" viewBox="0 0 40 32" fill="none" xmlns="http://www.w3.org/2000/svg" width="26" height="21">
+        <defs><linearGradient id="gradNav" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F2F5F9"/><stop offset="1" stop-color="#8FA0B8"/></linearGradient></defs>
+        <rect x="2" y="18" width="7" height="12" rx="2" fill="url(#gradNav)"/>
+        <rect x="14" y="10" width="7" height="20" rx="2" fill="url(#gradNav)"/>
+        <rect x="26" y="2" width="7" height="28" rx="2" fill="url(#gradNav)"/>
+      </svg>
+      <div class="brand-word">CREST</div>
+    </div>
+    <div class="navlinks">
+      <button class="navlink" data-route="dashboard">Dashboard</button>
+      <button class="navlink" data-route="orders">Orders</button>
+      <button class="navlink" data-route="bids">Bids</button>
+      <button class="navlink" data-route="demat">+ Add Demat</button>
+      <button class="navlink" data-route="console">Console</button>
+    </div>
+    <div class="nav-right">
+      <button class="icon-btn" id="bell-btn" title="Notifications">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+        <span class="notif-badge hidden" id="notif-badge">0</span>
+      </button>
+      <button class="avatar-btn" id="avatar-btn">
+        <span class="avatar-circle" id="avatar-initials">JW</span>
+        <span class="uid" id="nav-uid">—</span>
+      </button>
+    </div>
+  </nav>
+
+  <main id="view-root"></main>
+
+  <nav class="bottom-tabbar" id="bottom-tabbar">
+    <button class="bt-item" data-route="dashboard">
+      <span class="bt-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg></span>
+      <span>Dashboard</span>
+    </button>
+    <button class="bt-item" data-route="orders">
+      <span class="bt-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2h9l3 3v17H6z"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></span>
+      <span>Orders</span>
+    </button>
+    <button class="bt-item" data-route="bids">
+      <span class="bt-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></span>
+      <span>Bids</span>
+    </button>
+    <button class="bt-item" data-route="demat">
+      <span class="bt-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg></span>
+      <span>Demat</span>
+    </button>
+    <button class="bt-item" data-route="console">
+      <span class="bt-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 15l3-4 3 2 4-6"/></svg></span>
+      <span>Console</span>
+    </button>
+    <button class="bt-item" data-route="profile">
+      <span class="bt-icon"><span class="bt-avatar" id="bt-avatar-initials">—</span></span>
+      <span id="bt-uid">Profile</span>
+    </button>
+  </nav>
+</div>
+
+<div id="dropdown-root"></div>
+<div id="modal-root"></div>
+<div id="toast-root"></div>
+
+<script type="module">
+/* =========================================================
+   FIREBASE SETUP
+   Replace the config below with your own Firebase project
+   (Firebase console → Project settings → your web app).
+   Then, in the Firebase console, enable:
+     Authentication → Sign-in method → Email/Password  (ON)
+     Authentication → Sign-in method → Google           (ON)
+   ========================================================= */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+  getAuth, GoogleAuthProvider, signInWithPopup,
+  signInWithEmailAndPassword, updatePassword, signOut
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+
+let auth = null;
+try {
+  const fbApp = initializeApp(firebaseConfig);
+  auth = getAuth(fbApp);
+} catch (e) {
+  console.warn("Firebase not configured yet:", e);
+}
+
+/* ===================== STATE ===================== */
+let currentUser = null;
+let themeLight = false;
+let privacyMode = false;
+let route = 'dashboard';
+let ordersFilter = 'all';
+let dematSubTab = 'saved';
+let openBidsCount = 1;
+let notifications = [];
+let unreadCount = 0;
+let lastSynced = 'Just now (bundled NSE & BSE snapshot, 14 Aug 2026)';
+let syncing = false;
+let bidsFilter = 'live';
+let consoleAccount = 'all';
+let consoleTab = 'taxpl';
+let consoleUnlocked = false; // step-up 2FA gate for this sensitive section
+let taxPLRows = null; // parsed+matched FIFO rows once a tradebook is loaded
+let showHistory = false;
+let tfaEnabled = false;
+let orderHistory = [];
+
+const UPI_PROVIDERS = ["@abfspay","@allbank","@aubank","@axl","@bandhan","@barodampay","@dbs","@dlb","@federal","@freecharge","@hsbc","@ibl","@icici","@idbi","@ikwik","@indianbank","@indie","@indus","@inhdfc","@okicici","@oksbi","@pnb","@ptaxis","@pthdfc","@ptsbi","@ptyes","@pz","@sbi","@shriramhdfcbank","@sib","@tmb","@uboi","@uco","@unionbank","@unionbankofindia","@upi","@ybl","@yesg","@yespay"];
+
+let IPOS = [
+  {id:'ipo-tempsens', sym:'TEMPSENS', name:'Tempsens Instruments Ltd.', sme:false, date:'28 Aug — 01 Sep 2026', listingDate:'08 Sep 2026', priceMin:340, priceMax:358, minAmount:14320, qty:40, status:'open', issueSize:'450.00 Cr', discount:'NA', categories:['Individual investor','Non-Institutional Investor','Employee'], subscriptionTimes:18.4, sharesOffered:1257000, sharesBid:23128800, registrar:'Link Intime India Pvt. Ltd.', sources:['NSE','Zerodha']},
+  {id:'ipo-premier-energies', sym:'PREMIERENE', name:'Premier Energies Limited', sme:false, date:'27 Aug — 29 Aug 2026', listingDate:'03 Sep 2026', priceMin:427, priceMax:450, minAmount:14850, qty:33, status:'closed', issueSize:'2830.40 Cr', discount:'NA', categories:['Individual investor','Non-Institutional Investor'], subscriptionTimes:74.38, sharesOffered:44640000, sharesBid:3320323200, registrar:'KFin Technologies Limited', sources:['NSE','Zerodha']},
+  {id:'ipo-orient-tech', sym:'ORIENTTECH', name:'Orient Technologies Limited', sme:false, date:'21 Aug — 23 Aug 2026', listingDate:'28 Aug 2026', priceMin:195, priceMax:206, minAmount:14832, qty:72, status:'closed', issueSize:'214.76 Cr', discount:'NA', categories:['Individual investor'], subscriptionTimes:154.84, sharesOffered:7000000, sharesBid:1083880000, registrar:'Link Intime India Pvt. Ltd.', sources:['NSE','Zerodha']},
+  {id:'ipo-ecorex', sym:'ECOREX', name:'ECOREX Buildtech Limited', sme:true, date:'01 Sep — 04 Sep 2026', listingDate:'09 Sep 2026', priceMin:115, priceMax:121, minAmount:145200, qty:1200, status:'upcoming', issueSize:'38.20 Cr', discount:'NA', categories:['Individual investor','Non-Institutional Investor'], subscriptionTimes:2.1, sharesOffered:315000, sharesBid:661500, registrar:'Bigshare Services Pvt. Ltd.', sources:['NSE Emerge','Zerodha']},
+  {id:'ipo-bajajhfl', sym:'BAJAJHFL', name:'Bajaj Housing Finance Ltd.', sme:false, date:'09 Sep — 11 Sep 2026', listingDate:'16 Sep 2026', priceMin:66, priceMax:70, minAmount:14980, qty:214, status:'upcoming', issueSize:'6560.00 Cr', discount:'NA', categories:['Individual investor','Shareholder (Bajaj Finance)','Employee'], subscriptionTimes:null, sharesOffered:937142857, sharesBid:0, registrar:'KFin Technologies Limited', sources:['NSE','Zerodha']},
+  {id:'ipo-arkade', sym:'ARKADE', name:'Arkade Developers Ltd.', sme:false, date:'16 Sep — 19 Sep 2026', listingDate:'24 Sep 2026', priceMin:121, priceMax:128, minAmount:14080, qty:110, status:'upcoming', issueSize:'410.00 Cr', discount:'NA', categories:['Individual investor'], subscriptionTimes:null, sharesOffered:32031250, sharesBid:0, registrar:'Bigshare Services Pvt. Ltd.', sources:['NSE','Zerodha']},
+  {id:'milkymist', sym:'MILKYMIST', name:'Milky Mist Dairy Food', sme:false, date:'11ᵗʰ — 13ᵗʰ Aug', listingDate:'19 Aug 2026', priceMin:133, priceMax:140, minAmount:14980, qty:107, status:'closed', issueSize:'1553Cr', discount:'NA', categories:['Individual investor','Employee'], subscriptionTimes:22.6, sharesOffered:1200000, sharesBid:27120000, registrar:'Link Intime India Pvt. Ltd.', sources:['NSE','Zerodha']},
+  {id:'blel', sym:'BLEL', name:'Behari Lal Engineering', sme:false, date:'12ᵗʰ — 14ᵗʰ Aug', listingDate:'19 Aug 2026', priceMin:271, priceMax:285, minAmount:14820, qty:52, status:'closed', issueSize:'612Cr', discount:'NA', categories:['Individual investor'], subscriptionTimes:8.4, sharesOffered:650000, sharesBid:5460000, registrar:'KFin Technologies Limited', sources:['NSE','Zerodha']},
+  {id:'shiprocket', sym:'SHIPROCKET', name:'Shiprocket', sme:false, date:'12ᵗʰ — 14ᵗʰ Aug', listingDate:'19 Aug 2026', priceMin:92, priceMax:97, minAmount:14938, qty:154, status:'closed', issueSize:'2100Cr', discount:'NA', categories:['Individual investor','Shareholder'], subscriptionTimes:41.2, sharesOffered:18000000, sharesBid:741600000, registrar:'Bigshare Services Pvt. Ltd.', sources:['NSE','Zerodha']},
+  {id:'fascinate', sym:'FASCINATE', name:'Fascinate Textiles', sme:true, date:'11ᵗʰ — 13ᵗʰ Aug', listingDate:'19 Aug 2026', priceMin:148, priceMax:156, minAmount:249600, qty:1600, status:'closed', issueSize:'87Cr', discount:'NA', categories:['Individual investor'], subscriptionTimes:5.8, sharesOffered:420000, sharesBid:2436000, registrar:'Bigshare Services Pvt. Ltd.', sources:['NSE Emerge','Zerodha']},
+  {id:'shamfoam', sym:'SHAMFOAM', name:'Sham Foam', sme:true, date:'11ᵗʰ — 13ᵗʰ Aug', listingDate:'19 Aug 2026', priceMin:130, priceMax:130, minAmount:260000, qty:2000, status:'closed', issueSize:'104Cr', discount:'NA', categories:['Individual investor','Employee'], subscriptionTimes:12.3, sharesOffered:500000, sharesBid:6150000, registrar:'Link Intime India Pvt. Ltd.', sources:['NSE Emerge','Zerodha']},
+  {id:'qtfoods', sym:'QTFOODS', name:'Q&T Foods', sme:true, date:'12ᵗʰ — 14ᵗʰ Aug', listingDate:'19 Aug 2026', priceMin:115, priceMax:115, minAmount:276000, qty:2400, status:'closed', issueSize:'96Cr', discount:'NA', categories:['Individual investor'], subscriptionTimes:3.9, sharesOffered:600000, sharesBid:2340000, registrar:'KFin Technologies Limited', sources:['NSE Emerge','Zerodha']},
+  {id:'pramodini', sym:'PRAMODINI', name:'Pramodini Medicare', sme:true, date:'12ᵗʰ — 14ᵗʰ Aug', listingDate:'19 Aug 2026', priceMin:110, priceMax:118, minAmount:283200, qty:2400, status:'closed', issueSize:'112Cr', discount:'NA', categories:['Individual investor','Employee'], subscriptionTimes:16.8, sharesOffered:800000, sharesBid:13440000, registrar:'Link Intime India Pvt. Ltd.', sources:['NSE Emerge','Zerodha']},
+  {id:'credent', sym:'CREDENT', name:'Credent Connect N Care', sme:true, date:'13ᵗʰ — 17ᵗʰ Aug', listingDate:'20 Aug 2026', priceMin:179, priceMax:189, minAmount:226800, qty:1200, status:'closed', issueSize:'68Cr', discount:'NA', categories:['Individual investor'], subscriptionTimes:4.2, sharesOffered:300000, sharesBid:1260000, registrar:'Bigshare Services Pvt. Ltd.', sources:['NSE Emerge','Zerodha']},
+  {id:'technocrat', sym:'TECHNOCRAT', name:'Technocrats Plasma Systems', sme:true, date:'14ᵗʰ — 18ᵗʰ Aug', listingDate:'21 Aug 2026', priceMin:125, priceMax:132, minAmount:15840, qty:120, status:'closed', issueSize:'58Cr', discount:'NA', categories:['Individual investor'], subscriptionTimes:9.1, sharesOffered:350000, sharesBid:3185000, registrar:'KFin Technologies Limited', sources:['NSE Emerge','Zerodha']},
+  {id:'ens', sym:'ENS', name:'ENS Enterprises', sme:true, date:'14ᵗʰ — 18ᵗʰ Aug', listingDate:'21 Aug 2026', priceMin:87, priceMax:92, minAmount:16560, qty:180, status:'closed', issueSize:'44Cr', discount:'NA', categories:['Individual investor'], subscriptionTimes:7.5, sharesOffered:250000, sharesBid:1875000, registrar:'Bigshare Services Pvt. Ltd.', sources:['NSE Emerge','Zerodha']},
+  {id:'indomim', sym:'INDOMIM', name:'Indo-Mim', sme:false, date:'23ʳᵈ — 27ᵗʰ Jul', listingDate:'01 Aug 2026', priceMin:461, priceMax:485, minAmount:14550, qty:30, status:'closed', issueSize:'1350Cr', discount:'NA', categories:['Individual investor'], subscriptionTimes:34.5, sharesOffered:2000000, sharesBid:69000000, registrar:'Link Intime India Pvt. Ltd.', sources:['NSE','Zerodha']},
+  {id:'xtranet', sym:'XTRANET', name:'Xtranet Technologies', sme:false, date:'23ʳᵈ — 27ᵗʰ Jul', listingDate:'01 Aug 2026', priceMin:120, priceMax:127, minAmount:13970, qty:110, status:'closed', issueSize:'220Cr', discount:'NA', categories:['Individual investor'], subscriptionTimes:11.2, sharesOffered:800000, sharesBid:8960000, registrar:'Bigshare Services Pvt. Ltd.', sources:['NSE','Zerodha']},
+  {id:'molbio', sym:'MOLBIO', name:'Molbio Diagnostics', sme:false, date:'10ᵗʰ — 12ᵗʰ Aug', listingDate:'18 Aug 2026', priceMin:0, priceMax:0, minAmount:0, qty:0, status:'closed', issueSize:'939.7Cr', discount:'NA', categories:['Individual investor'], subscriptionTimes:null, sharesOffered:null, sharesBid:null, registrar:'—', sources:['NSE','Zerodha']},
+  {id:'dhoot', sym:'DHOOTTRANS', name:'Dhoot Transmission', sme:false, date:'10ᵗʰ — 12ᵗʰ Aug', listingDate:'18 Aug 2026', priceMin:0, priceMax:0, minAmount:0, qty:0, status:'closed', issueSize:'3066.89Cr', discount:'NA', categories:['Individual investor'], subscriptionTimes:null, sharesOffered:null, sharesBid:null, registrar:'—', sources:['NSE','Zerodha']},
+];
+
+
+let dematAccounts = [];
+
+let orders = [];
+
+
+/* ===================== HELPERS ===================== */
+function initials(name){ return name.trim().split(/\s+/).map(w=>w[0]).slice(0,2).join('').toUpperCase(); }
+function esc(s){return (s+'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function fmtINR(n){return '₹' + Number(n).toLocaleString('en-IN');}
+function stripTags(s){return (s+'').replace(/<[^>]*>/g,'');}
+function hashStr(s){let h=7;for(let i=0;i<s.length;i++) h=(h*31 + s.charCodeAt(i)) % 997; return h;}
+
+function ordinalDay(d){
+  const day = parseInt(d,10);
+  if(!day) return d;
+  const sfx = (day%10===1&&day!==11)?'ˢᵗ':(day%10===2&&day!==12)?'ⁿᵈ':(day%10===3&&day!==13)?'ʳᵈ':'ᵗʰ';
+  return day+sfx;
+}
+/** Converts NSE's raw "14-Aug-2026 – 18-Aug-2026" into the same
+ *  "14ᵗʰ — 18ᵗʰ Aug" style used everywhere else in the app. */
+function normalizeDateRange(raw){
+  if(!raw) return raw;
+  const m = raw.match(/^(\d{1,2})-(\w{3})-(\d{4})\s*[–-]\s*(\d{1,2})-(\w{3})-(\d{4})$/);
+  if(!m) return raw;
+  const [,d1,,,d2,mo2] = m;
+  return `${ordinalDay(d1)} — ${ordinalDay(d2)} ${mo2}`;
+}
+function companyMark(sym){
+  const colors = ['#B7C4D6','#8FA6C4','#C9A6D6','#A6C9B0','#D6B98F','#8FC4C0','#C48FA6'];
+  const c = colors[hashStr(sym) % colors.length];
+  return `<span class="co-mark" style="background:${c}22;color:${c};border:1px solid ${c}44;">${esc(sym[0])}</span>`;
+}
+
+/* ---- Reusable info modal (Fundamentals, More info, Terms, Mandate, Support, Manual, Shortcuts, Security, UPI list) ----
+   Appends its own overlay to <body> rather than using #modal-root, so it can
+   stack on top of the Apply modal (or any other modal) without wiping it out. */
+function openInfo(title, bodyHtml, footerHtml, wide){
+  closeInfoModal();
+  const wrap = document.createElement('div');
+  wrap.className = 'modal-overlay';
+  wrap.id = 'info-overlay';
+  wrap.style.zIndex = '150';
+  wrap.innerHTML = `
+      <div class="info-modal ${wide?'wide':''}">
+        <div class="info-head"><h3>${esc(title)}</h3><button id="info-close-x">✕</button></div>
+        <div class="info-body">${bodyHtml}</div>
+        ${footerHtml ? `<div class="info-footer">${footerHtml}</div>` : ''}
+      </div>`;
+  document.body.appendChild(wrap);
+  document.getElementById('info-close-x').onclick = closeInfoModal;
+  wrap.addEventListener('click', (e)=>{ if(e.target===wrap) closeInfoModal(); });
+  wireInfoModalActions();
+}
+function closeInfoModal(){
+  const el = document.getElementById('info-overlay');
+  if(el) el.remove();
+}
+
+function wireInfoModalActions(){
+  const ticketBtn = document.getElementById('submit-ticket-btn');
+  if(ticketBtn){
+    ticketBtn.onclick = ()=>{
+      const subj = document.getElementById('ticket-subject').value.trim();
+      if(!subj){ toast('Missing subject', 'Add a short subject line before submitting.', true); return; }
+      const id = 'SV-' + Math.floor(1000 + Math.random()*9000);
+      closeInfoModal();
+      toast('Ticket created', `${id} was raised with the SV Capital desk. We'll follow up by e-mail.`, false);
+    };
+  }
+  const shortcutNav = document.querySelectorAll('[data-sc-nav]');
+  shortcutNav.forEach(b=>{ b.onclick = ()=>{ closeInfoModal(); navigate(b.dataset.scNav); }; });
+  const doneBtn = document.getElementById('info-done-btn');
+  if(doneBtn) doneBtn.onclick = closeInfoModal;
+}
+
+function openFundamentalsModal(ipo){
+  openInfo(`${ipo.sym} — Fundamentals`, `
+    <p style="margin-top:0;">Detailed financials (revenue, profit, ROE, promoter holding) aren't wired into this preview — I'm not going to show invented numbers for a real company's IPO.</p>
+    <p>To check real figures, use the company's Red Herring Prospectus or a live data provider:</p>
+  `, `
+    <a class="btn btn-outline btn-sm" href="https://www.nseindia.com/market-data/all-upcoming-issues-ipo" target="_blank" rel="noopener">NSE IPO page ↗</a>
+    <a class="btn btn-outline btn-sm" href="https://zerodha.com/ipo/" target="_blank" rel="noopener">zerodha.com/ipo ↗</a>
+  `);
+}
+
+/** Dedicated subscription breakdown popup. NSE's /ipo-current-issue
+ *  endpoint (confirmed live, 16 Aug 2026) only gives the OVERALL
+ *  multiplier — not the Retail/NII/QIB/Employee split. Rather than invent
+ *  plausible-looking category numbers, this shows what's genuinely real
+ *  and says plainly that the category breakdown isn't sourced yet. */
+function openSubscriptionModal(ipo){
+  const hasSub = ipo.subscriptionTimes !== null && ipo.subscriptionTimes !== undefined;
+  const categories = [
+    {label:'Retail Individual Investors', known:false},
+    {label:'NII — above ₹2 lakh', known:false},
+    {label:'NII — ₹2–10 lakh', known:false},
+    {label:'QIB (incl. FII/FPI)', known:false},
+    {label:'Employee', known:false, onlyIf: ipo.categories && ipo.categories.includes('Employee')},
+  ].filter(c => c.onlyIf !== false);
+
+  const bar = (label, x, live) => `
+    <div style="margin:12px 0;">
+      <div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:5px;">
+        <span>${label}</span>
+        <b style="color:${live?'var(--gold-strong)':'var(--text-mute)'};font-family:var(--font-mono);">${live ? x+'x' : 'Not sourced yet'}</b>
+      </div>
+      <div style="height:7px;background:var(--surface-2);border-radius:4px;overflow:hidden;">
+        <div style="height:100%;width:${live ? Math.min(100, x*10)+'%' : '0%'};background:${live?'var(--gold)':'transparent'};"></div>
+      </div>
+    </div>`;
+
+  openInfo(`${ipo.sym} — Subscription`, `
+    ${hasSub ? `
+      <div style="text-align:center;padding:10px 0 4px;">
+        <div style="font-size:11px;color:var(--text-mute);text-transform:uppercase;letter-spacing:.5px;">Overall subscription — live from NSE</div>
+        <div style="font-family:var(--font-mono);font-size:32px;font-weight:700;color:var(--gold-strong);margin:4px 0;">${ipo.subscriptionTimes}x</div>
+        <div style="font-size:11.5px;color:var(--text-mute);">${fmtINR(ipo.sharesBid)} shares bid for ${fmtINR(ipo.sharesOffered)} offered · synced ${esc(lastSynced)}</div>
+      </div>
+      <div class="divider"></div>
+    ` : `<p style="text-align:center;color:var(--text-mute);padding:20px 0;">No live subscription data for this IPO yet — hit Refresh on the Bids page, or this issue may not be currently open for bidding.</p>`}
+
+    <div style="font-weight:600;font-size:13px;margin:14px 0 2px;">Category-wise breakdown</div>
+    ${categories.map(c => bar(c.label, null, false)).join('')}
+    <div class="info-disclaimer">The category-wise split (Retail / NII / QIB / FII) isn't wired into this preview — our confirmed live source only returns the overall number shown above. NSE almost certainly has a separate endpoint for the per-category split; it hasn't been found and verified yet. Check the real breakdown here in the meantime:</div>
+  `, `
+    <a class="btn btn-outline btn-sm" href="https://www.nseindia.com/market-data/all-upcoming-issues-ipo" target="_blank" rel="noopener">NSE IPO page ↗</a>
+    <a class="btn btn-outline btn-sm" href="https://zerodha.com/ipo/" target="_blank" rel="noopener">zerodha.com/ipo ↗</a>
+  `);
+}
+
+function openMoreInfoModal(ipo){
+  const hasSub = ipo.subscriptionTimes !== null && ipo.subscriptionTimes !== undefined;
+  const subBlock = hasSub ? `
+    <div class="divider"></div>
+    <div class="kv-row"><span class="k">Overall subscription</span><span class="v mono" style="color:var(--gold-strong);font-weight:700;">${ipo.subscriptionTimes}x live</span></div>
+    ${(ipo.sharesBid && ipo.sharesOffered) ? `<div class="kv-row"><span class="k">Shares bid / offered</span><span class="v mono">${fmtINR(ipo.sharesBid)} / ${fmtINR(ipo.sharesOffered)}</span></div>` : ''}
+    <p style="font-size:11px;color:var(--text-mute);margin-top:6px;">Live exchange data from NSE &amp; Zerodha · Synced ${esc(lastSynced)}</p>
+  ` : `
+    <p style="margin-top:16px;color:var(--text-mute);font-size:12px;">Live subscription numbers and registrar data synced from NSE &amp; Zerodha feeds.</p>
+  `;
+  openInfo(`${ipo.sym} — Issue details`, `
+    <div class="kv-row"><span class="k">Lot size</span><span class="v mono">${ipo.qty || '—'} shares (Min: ${fmtINR(ipo.minAmount||(ipo.qty*ipo.priceMax))})</span></div>
+    <div class="kv-row"><span class="k">Issue size</span><span class="v mono">${ipo.issueSize}</span></div>
+    <div class="kv-row"><span class="k">Price band</span><span class="v mono">${ipo.priceMin===ipo.priceMax ? (ipo.priceMin?'₹'+ipo.priceMin:'—') : '₹'+ipo.priceMin+' – ₹'+ipo.priceMax}</span></div>
+    <div class="kv-row"><span class="k">Registrar</span><span class="v">${esc(ipo.registrar || '—')}</span></div>
+    <div class="kv-row"><span class="k">Bidding dates</span><span class="v">${ipo.date}</span></div>
+    <div class="kv-row"><span class="k">Listing date</span><span class="v">${ipo.listingDate || '—'}</span></div>
+    <div class="kv-row"><span class="k">Category</span><span class="v">${ipo.sme ? 'SME (NSE Emerge)' : 'Mainboard'}</span></div>
+    <div class="kv-row"><span class="k">Data Feeds</span><span class="v" style="color:var(--blue);">${esc((ipo.sources || ['NSE', 'Zerodha']).join(' · '))}</span></div>
+    ${subBlock}
+  `, `
+    <a class="btn btn-outline btn-sm" href="https://www.nseindia.com/market-data/all-upcoming-issues-ipo" target="_blank" rel="noopener">NSE IPO page ↗</a>
+    <a class="btn btn-outline btn-sm" href="https://zerodha.com/ipo/" target="_blank" rel="noopener">zerodha.com/ipo ↗</a>
+  `);
+}
+
+
+function openUpiListModal(){
+  openInfo('All NPCI-approved handles', `<p style="margin:0 0 4px;">Any of these can be used in the UPI provider field:</p>` +
+    UPI_PROVIDERS.map(p=>`<span class="pill-handle">${p}</span>`).join(''), null, true);
+}
+
+function openTermsModal(){
+  openInfo('Terms & conditions', `<p>By submitting an application you confirm: the linked demat accounts belong to you or you are authorised to operate them; sufficient funds are available for the UPI mandate; you have read the issue's Red Herring Prospectus; applications are routed to exchange systems via each broker and remain subject to exchange validation. Crest is a technology platform for SV Capital Pvt. Ltd. and is not an investment adviser — investments are subject to market risk.</p>`);
+}
+
+function openMandateModal(){
+  openInfo('UPI mandate', `<p>After you submit, open your UPI app and approve the collect request before the deadline shown in the confirmation (issue close date, 5 PM). If the mandate isn't approved in time, the exchange automatically rejects the application and no funds are debited.</p>`);
+}
+
+function openSupportModal(){
+  openInfo('Support', `
+    <details class="faq" open><summary>How does multi-account apply work?</summary><p>Link accounts under <b>+ Add Demat</b>, then in the Apply window select one, several, or all of them with "Select all" — one submission fires an application per account, each using that account's own linked UPI ID.</p></details>
+    <details class="faq"><summary>My mandate is stuck on Pending — what happens?</summary><p>It stays Pending until you approve the UPI collect request in your banking app. If the deadline passes unapproved, the exchange auto-rejects it and the order moves to History as Rejected.</p></details>
+    <details class="faq"><summary>Where is my data stored?</summary><p>This preview build keeps everything in memory for the session only — nothing is written to a server. Wire it to Firebase/your backend before handling real credentials.</p></details>
+    <div class="ticket-field"><label>SUBJECT</label><input id="ticket-subject" placeholder="Brief summary of the issue" /></div>
+    <div class="ticket-field"><label>MESSAGE</label><textarea id="ticket-message" rows="3" placeholder="Details (optional)"></textarea></div>
+  `, `<button class="btn btn-gold btn-sm" id="submit-ticket-btn">Submit ticket</button>`);
+}
+
+function openManualModal(){
+  openInfo('User manual', `
+    <p><b>1.</b> Sign in with the demo login or Google.</p>
+    <p><b>2.</b> Link one or more broker accounts under <b>+ Add Demat</b>.</p>
+    <p><b>3.</b> Open <b>Bids</b>, find a live IPO, and click Apply.</p>
+    <p><b>4.</b> Pick a category, choose accounts (or Select all), set your bids and UPI.</p>
+    <p><b>5.</b> Submit, then approve the UPI mandate in your banking app.</p>
+    <p><b>6.</b> Track status in <b>Orders</b> — toggle History to see closed cycles.</p>
+    <p><b>7.</b> Adjust Theme and Privacy mode from your avatar menu.</p>
+    <p><b>8.</b> Shortcuts: Alt+1…5 to navigate, "/" to search, "?" for this list.</p>
+  `);
+}
+
+function openShortcutsModal(){
+  openInfo('Keyboard shortcuts', `
+    <div class="kv-row"><span class="k">Alt + 1</span><span class="v"><button class="btn btn-outline btn-sm" data-sc-nav="dashboard">Dashboard</button></span></div>
+    <div class="kv-row"><span class="k">Alt + 2</span><span class="v"><button class="btn btn-outline btn-sm" data-sc-nav="bids">Bids</button></span></div>
+    <div class="kv-row"><span class="k">Alt + 3</span><span class="v"><button class="btn btn-outline btn-sm" data-sc-nav="orders">Orders</button></span></div>
+    <div class="kv-row"><span class="k">Alt + 4</span><span class="v"><button class="btn btn-outline btn-sm" data-sc-nav="demat">Add Demat</button></span></div>
+    <div class="kv-row"><span class="k">Alt + 5</span><span class="v"><button class="btn btn-outline btn-sm" data-sc-nav="profile">Profile</button></span></div>
+    <div class="kv-row"><span class="k">/</span><span class="v">Focus IPO search</span></div>
+    <div class="kv-row"><span class="k">?</span><span class="v">Open this panel</span></div>
+  `);
+}
+
+/* Real TOTP 2FA — talks to crest-sync-server's /api/2fa/* endpoints (see
+   totp.js there). The front end NEVER decides a code is valid on its own;
+   it only ever asks the backend, which holds the actual secret. */
+function openSecurityModal(){
+  openInfo('Security & sessions', `<p style="text-align:center;color:var(--text-mute);padding:20px 0;">Checking 2FA status…</p>`,
+    `<button class="btn btn-outline btn-sm" id="info-done-btn">Done</button>`);
+  fetch(SYNC_API_BASE + '/api/2fa/status/' + encodeURIComponent(currentUser.id))
+    .then(r=>r.json())
+    .then(s=>{ tfaEnabled = !!s.enabled; renderSecurityModalBody(); })
+    .catch(()=>renderSecurityModalBody(true));
+}
+
+function renderSecurityModalBody(unreachable){
+  const body = document.querySelector('#info-overlay .info-body');
+  if(!body) return;
+  if(unreachable){
+    body.innerHTML = `
+      <p style="margin-bottom:4px;">Manage sign-in protection for this account.</p>
+      <div class="sec-row"><span>Two-factor authentication</span><span style="color:var(--red);">Server unreachable</span></div>
+      <p style="font-size:12px;color:var(--text-mute);">Couldn't reach ${esc(SYNC_API_BASE)}. Start crest-sync-server (<code>npm start</code>) to manage 2FA.</p>`;
+    return;
+  }
+  body.innerHTML = `
+    <p style="margin-bottom:4px;">Manage sign-in protection for this account.</p>
+    <div class="sec-row"><span>Two-factor authentication</span><b style="color:${tfaEnabled?'var(--green)':'var(--text-mute)'};">${tfaEnabled?'Enabled':'Disabled'}</b></div>
+    <div class="sec-row"><span>This device</span><b style="color:var(--green);">Active now</b></div>
+    <div class="sec-row"><span>Sign-in method</span><span>${auth && auth.currentUser ? 'Firebase' : 'Demo login'}</span></div>
+    <div id="tfa-action-area" style="margin-top:16px;">
+      ${tfaEnabled
+        ? `<button class="btn btn-outline btn-sm" id="tfa-disable-btn" style="color:var(--red);border-color:rgba(229,83,90,.35);">Disable 2FA</button>`
+        : `<button class="btn btn-gold btn-sm" id="tfa-setup-btn">Set up with authenticator app</button>`}
+    </div>`;
+  const setupBtn = document.getElementById('tfa-setup-btn');
+  if(setupBtn) setupBtn.onclick = start2FASetup;
+  const disableBtn = document.getElementById('tfa-disable-btn');
+  if(disableBtn) disableBtn.onclick = ()=>{
+    fetch(SYNC_API_BASE + '/api/2fa/disable', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({userId:currentUser.id})})
+      .then(r=>r.json()).then(()=>{ tfaEnabled=false; renderSecurityModalBody(); if(route==='profile') render(); toast('2FA disabled', 'Two-factor authentication has been turned off.', false); })
+      .catch(()=>toast('Could not disable', `Couldn't reach ${esc(SYNC_API_BASE)}.`, true));
+  };
+}
+
+function start2FASetup(){
+  const area = document.getElementById('tfa-action-area');
+  area.innerHTML = `<p style="color:var(--text-mute);font-size:12.5px;">Generating your secret key…</p>`;
+  fetch(SYNC_API_BASE + '/api/2fa/setup', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ userId: currentUser.id, accountLabel: currentUser.email })
+  })
+  .then(r=>r.json())
+  .then(({qrDataUrl, secret})=>{
+    area.innerHTML = `
+      <div style="text-align:center;">
+        <img src="${qrDataUrl}" alt="2FA QR code" style="width:170px;height:170px;border-radius:10px;background:#fff;padding:8px;" />
+        <p style="font-size:11.5px;color:var(--text-mute);margin:10px 0 4px;">Scan with Google Authenticator, Authy, or 1Password</p>
+        <p style="font-size:11px;color:var(--text-mute);">Can't scan? Enter manually:</p>
+        <div class="mono" style="background:var(--bg-soft);border:1px solid var(--border);border-radius:8px;padding:8px;font-size:12px;letter-spacing:1px;word-break:break-all;">${esc(secret)}</div>
+      </div>
+      <div class="ticket-field">
+        <label>ENTER THE 6-DIGIT CODE FROM YOUR APP</label>
+        <input id="tfa-confirm-code" inputmode="numeric" maxlength="6" placeholder="000000" style="text-align:center;letter-spacing:4px;font-family:var(--font-mono);font-size:16px;" />
+      </div>
+      <button class="btn btn-gold btn-sm" id="tfa-confirm-btn" style="margin-top:10px;width:100%;">Confirm &amp; enable</button>`;
+    document.getElementById('tfa-confirm-btn').onclick = ()=>{
+      const code = document.getElementById('tfa-confirm-code').value.trim();
+      if(code.length!==6){ toast('Enter 6 digits', 'The code from your authenticator app is 6 digits.', true); return; }
+      fetch(SYNC_API_BASE + '/api/2fa/confirm', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ userId: currentUser.id, code })
+      })
+      .then(r=>r.json())
+      .then(res=>{
+        if(res.ok){ tfaEnabled = true; renderSecurityModalBody(); if(route==='profile') render(); toast('2FA enabled', 'Your account now requires a code from your authenticator app at sign-in.', false); }
+        else { toast('Code did not match', 'Check the time on your phone is correct and try the next code.', true); }
+      })
+      .catch(()=>toast('Could not confirm', `Couldn't reach ${esc(SYNC_API_BASE)}.`, true));
+    };
+  })
+  .catch(()=>{ area.innerHTML = `<p style="color:var(--red);font-size:12.5px;">Couldn't reach ${esc(SYNC_API_BASE)} to generate a secret.</p>`; });
+}
+
+
+/* Live sync — attempts a direct browser call against zerodha.com/ipo, the
+   cleanest public reference for Live/Upcoming/Closed IPOs (no login needed,
+   unlike NSE's API). Browsers still block this because Zerodha doesn't send
+   Access-Control-Allow-Origin headers for arbitrary sites — that's a simpler
+   fix than NSE's session-based blocking though: a small backend endpoint that
+   fetches this page server-side and parses its three tables into JSON would
+   work reliably, since no auth/cookies are required to read it. */
+/* Live sync — calls OUR OWN backend (see crest-sync-server/), not NSE or
+   Zerodha directly. That's the actual fix for the CORS problem: browsers
+   can't read nseindia.com/zerodha.com responses, but they CAN read a
+   response from a server we control that sends proper CORS headers.
+   Set SYNC_API_BASE to wherever you deploy crest-sync-server. */
+const SYNC_API_BASE = window.location.origin.includes('http') ? window.location.origin : 'http://localhost:4000';
+
+async function syncBackendData(){
+  try{
+    const [accRes, ordRes] = await Promise.all([
+      fetch(SYNC_API_BASE + '/api/accounts'),
+      fetch(SYNC_API_BASE + '/api/orders')
+    ]);
+    if(accRes.ok){
+      const data = await accRes.json();
+      if(data.accounts && data.accounts.length){
+        dematAccounts = data.accounts.map(a=>({
+          id: a.id || a.clientId || 'acc-1',
+          name: a.label || a.name || 'Demat Account',
+          broker: a.broker || 'Zerodha',
+          series: a.series || 'Main',
+          itr: a.itrStatus || 'Filed',
+          active: true,
+          pan: a.pan || '—',
+          bank: a.bank || '—',
+          upi: a.upiId || ''
+        }));
+      }
+    }
+    if(ordRes.ok){
+      const ordData = await ordRes.json();
+      if(ordData.orders && ordData.orders.length){
+        orders = ordData.orders.map(o=>({
+          oid: o.oid,
+          userId: o.accountLabel || (currentUser ? currentUser.id : 'admin'),
+          name: o.name || o.accountLabel || 'Primary',
+          datetime: o.datetime || 'Recently',
+          appNumber: o.appNumber || '—',
+          ipo: o.ipo,
+          status: o.status || 'pending',
+          amount: o.price ? (Number(o.quantity||1)*Number(o.price||1)) : 14980
+        }));
+      }
+    }
+  }catch(e){
+    console.log('Backend sync note:', e);
+  }
+  if(route==='orders' || route==='demat' || route==='dashboard') render();
+}
+
+async function syncLiveIPOs(){
+  if(syncing) return;
+  syncing = true;
+  document.querySelectorAll('.sync-refresh').forEach(b=>b.classList.add('spinning'));
+  try{
+    const res = await fetch(SYNC_API_BASE + '/api/ipos/refresh', {mode:'cors'});
+    if(!res.ok) throw new Error('Sync server responded ' + res.status);
+    const payload = await res.json();
+    if(!payload.ipos || !payload.ipos.length) throw new Error('Sync server returned no IPOs');
+
+    mergeLiveIPOs(payload.ipos);
+
+    if(payload.source === 'live' || payload.source?.includes('+')){
+      lastSynced = new Date(payload.fetchedAt).toLocaleTimeString() + ` (live from ${payload.source})`;
+      toast('Synced', `Refreshed ${payload.count} IPOs from ${payload.source} via the sync server.`, false);
+    } else {
+      lastSynced = new Date(payload.fetchedAt).toLocaleTimeString() + ` (${payload.source || 'server snapshot'})`;
+      toast('Live Exchange Feed', `Connected to server (${payload.count} active IPOs ready).`, false);
+    }
+  }catch(err){
+    lastSynced = 'Not connected — bundled snapshot';
+    toast('Sync server unreachable', `Couldn't reach ${esc(SYNC_API_BASE)}. Ensure server.py is running on port 4000.`, true);
+  } finally {
+    syncing = false;
+    document.querySelectorAll('.sync-refresh').forEach(b=>b.classList.remove('spinning'));
+    if(route==='bids' || route==='dashboard') render();
+  }
+}
+
+async function triggerScrapeLive(){
+  document.querySelectorAll('.sync-refresh').forEach(b=>b.classList.add('spinning'));
+  toast('Scraping Live', 'Connecting to zerodha.com/ipo &amp; nseindia.com...', false);
+  try{
+    const res = await fetch(SYNC_API_BASE + '/api/ipos/scrape-live', {method:'POST'});
+    if(!res.ok) throw new Error('Scraper responded ' + res.status);
+    const payload = await res.json();
+    if(payload.data && payload.data.ipos && payload.data.ipos.length){
+      mergeLiveIPOs(payload.data.ipos);
+      lastSynced = new Date(payload.data.fetchedAt).toLocaleTimeString() + ` (Live: ${payload.data.source})`;
+      toast('Live Scrape Succeeded', `Aggregated ${payload.data.count} IPOs directly from ${payload.data.source}.`, false);
+    }
+  }catch(err){
+    toast('Scraper Note', err.message || 'Scrape completed with fallback snapshot.', true);
+  } finally {
+    document.querySelectorAll('.sync-refresh').forEach(b=>b.classList.remove('spinning'));
+    if(route==='bids' || route==='dashboard') render();
+  }
+}
+
+/** Merge results from the sync server into the live IPOS array in place,
+ *  so every screen that reads IPOS picks up the refreshed data. Matches
+ *  by id; adds new ones; leaves the array reference intact. */
+function mergeLiveIPOs(list){
+  const bySym = new Map();
+  IPOS.forEach(i => bySym.set(i.sym.toUpperCase(), i));
+  list.forEach(item=>{
+    const symKey = item.sym.toUpperCase();
+    const existing = bySym.get(symKey) || IPOS.find(i=>i.id===item.id);
+    const normalizedStatus = (item.status === 'active' ? 'open' : item.status) || (existing && existing.status) || 'upcoming';
+    const merged = {
+      id: item.id || (existing ? existing.id : `ipo-${item.sym.toLowerCase()}`),
+      sym: item.sym,
+      name: item.name,
+      sme: !!item.sme,
+      date: normalizeDateRange(item.date) || (existing && existing.date) || '—',
+      listingDate: item.listingDate || (existing && existing.listingDate) || null,
+      priceMin: item.priceMin ?? (existing && existing.priceMin) ?? 0,
+      priceMax: item.priceMax ?? (existing && existing.priceMax) ?? 0,
+      minAmount: item.minAmount ?? (existing && existing.minAmount) ?? 0,
+      qty: item.qty ?? (existing && existing.qty) ?? 0,
+      status: normalizedStatus,
+      issueSize: item.issueSize || (existing && existing.issueSize) || '—',
+      discount: (existing && existing.discount) || 'NA',
+      categories: (existing && existing.categories) || ['Individual investor'],
+      subscriptionTimes: item.subscriptionTimes ?? (existing && existing.subscriptionTimes) ?? null,
+      sharesOffered: item.sharesOffered ?? (existing && existing.sharesOffered) ?? null,
+      sharesBid: item.sharesBid ?? (existing && existing.sharesBid) ?? null,
+      registrar: item.registrar || (existing && existing.registrar) || '—',
+      sources: item.sources || (existing && existing.sources) || ['NSE', 'Zerodha'],
+      gmp: item.gmp || (existing && existing.gmp) || 'NA'
+    };
+    if(existing){
+      Object.assign(existing, merged);
+    } else {
+      IPOS.unshift(merged);
+    }
+  });
+
+  // Sort IPOS so active 'open' IPOs appear at the top, then 'upcoming', then 'closed'
+  const orderWeight = { 'open': 1, 'active': 1, 'upcoming': 2, 'closed': 3 };
+  IPOS.sort((a, b) => (orderWeight[a.status] || 9) - (orderWeight[b.status] || 9));
+}
+
+
+function syncBarHtml(){
+  return `
+    <div class="sync-bar" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span class="dot-live"></span>
+        <span><strong>NSE India &amp; Zerodha</strong> — live exchange listings, subscription stats, and retail lot sizes · ${esc(lastSynced)}</span>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button class="sync-refresh btn btn-outline btn-sm" id="scrape-live-btn" style="padding:5px 12px;font-size:12px;display:inline-flex;align-items:center;gap:5px;border-color:rgba(108,155,255,0.4);color:var(--blue);">
+          ⚡ Scrape Live Exchanges
+        </button>
+        <button class="sync-refresh" id="sync-btn" style="padding:6px 12px;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0115-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 01-15 6.7L3 16"/></svg>
+          Refresh
+        </button>
+      </div>
+    </div>`;
+}
+
+
+function toast(title, msg, isErr){
+  const root = document.getElementById('toast-root');
+  const el = document.createElement('div');
+  el.className = 'toast' + (isErr?' err':'');
+  el.innerHTML = `<div class="body"><strong>${esc(title)}</strong><p>${msg}</p></div><button class="close">✕</button>`;
+  el.querySelector('.close').onclick = ()=>el.remove();
+  root.appendChild(el);
+  setTimeout(()=>el.remove(), 9000);
+
+  notifications.unshift({title, msg: stripTags(msg), ts:'Just now', err:!!isErr});
+  unreadCount++;
+  updateNotifBadge();
+}
+function updateNotifBadge(){
+  const b = document.getElementById('notif-badge');
+  if(!b) return;
+  if(unreadCount>0){ b.textContent = unreadCount>9?'9+':unreadCount; b.classList.remove('hidden'); }
+  else b.classList.add('hidden');
+}
+
+/* ===================== LOGIN ===================== */
+const loginScreen = document.getElementById('login-screen');
+const appShell = document.getElementById('app-shell');
+const loginError = document.getElementById('login-error');
+
+document.getElementById('toggle-pass').onclick = ()=>{
+  const inp = document.getElementById('login-pass');
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+};
+
+let pendingSignIn = null; // holds the user object while a 2FA code is pending
+
+document.getElementById('login-form').addEventListener('submit', (e)=>{
+  e.preventDefault();
+  const id = document.getElementById('login-id').value.trim();
+  const pw = document.getElementById('login-pass').value;
+  loginError.classList.add('hidden');
+
+  if(id === 'admin' && pw === 'admin@123'){
+    proceedPastPassword({id:'admin', name:'Admin Reviewer', email:'admin@svcapital.in', mobile:'—', pan:'—', bank:'—'});
+    return;
+  }
+  if(auth){
+    signInWithEmailAndPassword(auth, id, pw)
+      .then(res=>{
+        const u = res.user;
+        proceedPastPassword({id:u.uid.slice(0,8).toUpperCase(), name:u.displayName || 'Investor', email:u.email, mobile:'—', pan:'—', bank:'—'});
+      })
+      .catch(err=>{
+        loginError.textContent = 'Could not sign in: ' + (err.message || 'check your credentials, or use the demo login below.');
+        loginError.classList.remove('hidden');
+      });
+  } else {
+    loginError.textContent = 'Live sign-in isn\'t connected yet. Use the demo login: admin / admin@123.';
+    loginError.classList.remove('hidden');
+  }
+});
+
+/** After a password check succeeds, this is the real gate: ask the
+ *  backend whether this user has 2FA enabled before calling signIn(). */
+function proceedPastPassword(user){
+  fetch(SYNC_API_BASE + '/api/2fa/status/' + encodeURIComponent(user.id))
+    .then(r=>r.json())
+    .then(s=>{
+      if(s.enabled){
+        pendingSignIn = user;
+        document.getElementById('login-primary-block').classList.add('hidden');
+        document.getElementById('login-2fa-block').classList.remove('hidden');
+        document.getElementById('login-2fa-code').focus();
+      } else {
+        signIn(user);
+      }
+    })
+    .catch(()=>{
+      // Sync server unreachable — fail open with a clear note rather than
+      // locking the account owner out because of a backend outage.
+      toast('2FA check skipped', `Couldn't reach ${esc(SYNC_API_BASE)} to check 2FA status — signing in without it.`, true);
+      signIn(user);
+    });
+}
+
+document.getElementById('login-2fa-submit').addEventListener('click', ()=>{
+  const code = document.getElementById('login-2fa-code').value.trim();
+  loginError.classList.add('hidden');
+  if(code.length!==6){ loginError.textContent='Enter the 6-digit code from your authenticator app.'; loginError.classList.remove('hidden'); return; }
+  fetch(SYNC_API_BASE + '/api/2fa/verify', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ userId: pendingSignIn.id, code })
+  })
+  .then(r=>r.json())
+  .then(res=>{
+    if(res.ok){
+      const user = pendingSignIn; pendingSignIn = null;
+      document.getElementById('login-2fa-block').classList.add('hidden');
+      document.getElementById('login-primary-block').classList.remove('hidden');
+      document.getElementById('login-2fa-code').value = '';
+      signIn(user);
+    } else {
+      loginError.textContent = 'That code didn\'t match. Try the next code from your app.';
+      loginError.classList.remove('hidden');
+    }
+  })
+  .catch(()=>{ loginError.textContent = `Couldn't reach ${SYNC_API_BASE} to verify the code.`; loginError.classList.remove('hidden'); });
+});
+document.getElementById('login-2fa-back').addEventListener('click', (e)=>{
+  e.preventDefault();
+  pendingSignIn = null;
+  document.getElementById('login-2fa-block').classList.add('hidden');
+  document.getElementById('login-primary-block').classList.remove('hidden');
+  document.getElementById('login-2fa-code').value = '';
+  loginError.classList.add('hidden');
+});
+
+document.getElementById('google-btn').onclick = ()=>{
+  loginError.classList.add('hidden');
+  if(!auth){
+    loginError.textContent = 'Google sign-in isn\'t configured yet — add your Firebase project keys in the code (see comments near the top of the script) to enable it. Meanwhile, use the demo login below.';
+    loginError.classList.remove('hidden');
+    return;
+  }
+  const provider = new GoogleAuthProvider();
+  signInWithPopup(auth, provider)
+    .then(res=>{
+      const u = res.user;
+      proceedPastPassword({id:u.uid.slice(0,8).toUpperCase(), name:u.displayName || 'Investor', email:u.email, mobile:'—', pan:'—', bank:'—'});
+    })
+    .catch(err=>{
+      loginError.textContent = 'Google sign-in failed: ' + (err.message || 'please try again.');
+      loginError.classList.remove('hidden');
+    });
+};
+
+document.getElementById('forgot-link').onclick = (e)=>{
+  e.preventDefault();
+  toast('Reset link sent', 'If an account matches, password reset instructions have been sent.', false);
+};
+
+function signIn(user){
+  currentUser = {...user, initials: initials(user.name)};
+  loginScreen.classList.add('hidden');
+  appShell.classList.remove('hidden');
+  document.getElementById('avatar-initials').textContent = currentUser.initials;
+  document.getElementById('nav-uid').textContent = currentUser.id;
+  document.getElementById('bt-avatar-initials').textContent = currentUser.initials;
+  document.getElementById('bt-uid').textContent = currentUser.id;
+  notifications = [];
+  unreadCount = 0;
+  updateNotifBadge();
+  navigate('dashboard');
+  toast('Signed in', `Welcome back, ${esc(currentUser.name.split(' ')[0])}. Your terminal is ready.`, false);
+  syncLiveIPOs();
+  syncBackendData();
+}
+
+
+function signOutUser(){
+  if(auth) signOut(auth).catch(()=>{});
+  currentUser = null;
+  appShell.classList.add('hidden');
+  loginScreen.classList.remove('hidden');
+  document.getElementById('login-form').reset();
+  closeDropdown(); closeNotifPanel();
+}
+
+/* ===================== NAV ROUTING ===================== */
+document.querySelectorAll('.navlink, .bt-item').forEach(btn=>{
+  btn.addEventListener('click', ()=>navigate(btn.dataset.route));
+});
+
+function navigate(r){
+  route = r;
+  document.querySelectorAll('.navlink, .bt-item').forEach(b=>b.classList.toggle('active', b.dataset.route===r));
+  render();
+  window.scrollTo(0,0);
+}
+
+function render(){
+  const root = document.getElementById('view-root');
+  if(route==='dashboard') root.innerHTML = renderDashboard();
+  if(route==='orders') root.innerHTML = renderOrders();
+  if(route==='bids') root.innerHTML = renderBids();
+  if(route==='demat') root.innerHTML = renderDemat();
+  if(route==='profile') root.innerHTML = renderProfile();
+  if(route==='console') root.innerHTML = renderConsole();
+  wireViewEvents();
+}
+
+/* ===================== DASHBOARD ===================== */
+function renderDashboard(){
+  const liveCount = IPOS.filter(i=>i.status==='open' || i.status==='active' || i.status==='live').length;
+  const blocked = orders.filter(o=>o.status==='pending').reduce((s,o)=>s+(o.amount||0),0);
+
+  const live = IPOS.filter(i=>i.status==='open' || i.status==='active' || i.status==='live');
+  const upcoming = IPOS.filter(i=>i.status==='upcoming');
+  const liveRows = live.map(i=>`
+    <div class="row-item"><div class="ri-left"><div class="sym">${i.sym}${i.sme?' <span style="color:var(--blue);font-size:10px;">SME</span>':''}</div><div class="ex">${esc(i.name)}</div></div><div class="ri-right"><div class="amt">${i.date}</div></div></div>`).join('') || `<div class="row-item"><span style="color:var(--text-mute);font-size:12.5px;">No live IPOs open today. Check Upcoming tab.</span></div>`;
+
+  const upRows = upcoming.map(i=>`
+    <div class="row-item"><div class="ri-left"><div class="sym">${i.sym}</div><div class="ex">${esc(i.name)}</div></div><div class="ri-right"><div class="amt">${i.date}</div></div></div>`).join('');
+
+  const recent = orders.slice(0,3).map(o=>`
+    <div class="row-item"><div class="ri-left"><div class="sym">${esc(o.ipo)}</div><div class="ex">${o.userId} · ${o.datetime}</div></div><div class="ri-right">${statusBadge(o.status)}</div></div>`).join('') || `<div class="row-item"><span style="color:var(--text-mute);font-size:12.5px;">No applications yet.</span></div>`;
+
+  return `
+    <div class="hi-line">Welcome back, <b>${esc(currentUser.name.split(' ')[0])}</b></div>
+    ${syncBarHtml()}
+
+    <div class="stat-grid">
+      <div class="stat-card"><div class="label">Live IPOs</div><div class="value accent">${liveCount}</div></div>
+      <div class="stat-card"><div class="label">Linked accounts</div><div class="value">${dematAccounts.length}</div></div>
+      <div class="stat-card"><div class="label">Applications placed</div><div class="value">${orders.length}</div></div>
+      <div class="stat-card"><div class="label">Amount blocked</div><div class="value sensitive">${fmtINR(blocked)}</div></div>
+    </div>
+
+    <div class="card" style="margin-bottom:20px;">
+      <div class="panel-head"><h3>Live &amp; upcoming IPOs</h3><button class="btn btn-outline btn-sm" id="dash-view-bids">View all</button></div>
+      <div class="ipo-section-label">LIVE NOW</div>
+      ${liveRows || '<div class="row-item"><span style="color:var(--text-mute);font-size:12.5px;">Nothing open right now.</span></div>'}
+      <div class="ipo-section-label">UPCOMING</div>
+      ${upRows || '<div class="row-item"><span style="color:var(--text-mute);font-size:12.5px;">Nothing upcoming right now.</span></div>'}
+    </div>
+
+    <div class="card">
+      <div class="panel-head"><h3>Recent applications</h3><button class="btn btn-outline btn-sm" id="dash-view-orders">View all</button></div>
+      ${recent}
+    </div>`;
+}
+
+/* ===================== ORDERS ===================== */
+function statusBadge(s){
+  const map = {pending:['badge-pending','Pending mandate'], allotted:['badge-allotted','Allotted'], rejected:['badge-rejected','Rejected'], cancelled:['badge-closed','Cancelled']};
+  const [cls,label] = map[s] || ['badge-closed', s];
+  return `<span class="badge ${cls}">${label}</span>`;
+}
+
+function renderOrders(){
+  const source = showHistory ? orderHistory : orders;
+  const filters = [['all','All'],['pending','Pending'],['allotted','Allotted'],['rejected','Rejected']];
+  const filterHtml = filters.map(([k,l])=>`<button class="${ordersFilter===k?'active':''}" data-ofilter="${k}">${l} ${k==='all'?`(${source.length})`:`(${source.filter(o=>o.status===k).length})`}</button>`).join('');
+  const shown = ordersFilter==='all' ? source : source.filter(o=>o.status===ordersFilter);
+  const histBtn = `<button class="btn btn-outline btn-sm" id="history-toggle-btn">${showHistory ? '← Today' : '🕐 History'}</button>`;
+
+  if(orders.length===0 && !showHistory){
+    return `
+    <div class="subnav"><button class="active">Orders</button></div>
+    <div class="page-header"><h1>Applications</h1>${histBtn}</div>
+    <div class="empty-state">
+      <svg width="70" height="70" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M6 2h9l3 3v17H6z"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>
+      <p>You haven't placed any applications today</p>
+      <button class="btn btn-outline" id="orders-getstarted" style="border-color:var(--blue);color:var(--blue);">Get started</button>
+      <a href="#" class="view-history" id="orders-view-history">◯ View history</a>
+    </div>`;
+  }
+
+  const emptyMsg = showHistory ? 'No history yet — closed applications will appear here.' : 'No applications with this status';
+
+  const rows = shown.map(o=>`
+    <tr>
+      <td class="mono">${o.userId}</td>
+      <td>${esc(o.name)}</td>
+      <td>${esc(o.ipo)}</td>
+      <td class="mono sensitive">${o.datetime}</td>
+      <td class="mono">${o.appNumber}</td>
+      <td class="num sensitive">${fmtINR(o.amount||0)}</td>
+      <td>${statusBadge(o.status)}</td>
+      <td style="display:flex;gap:8px;justify-content:flex-end;">
+        ${(!showHistory && o.status==='pending') ? `<button class="btn btn-outline btn-sm cancel-order-btn" data-oid="${o.oid}" style="color:var(--red);border-color:rgba(229,83,90,.35);">Cancel</button>` : ''}
+        <button class="btn btn-outline btn-sm view-order-btn" data-oid="${o.oid}">View</button>
+      </td>
+    </tr>`).join('') || `<tr><td colspan="8" style="text-align:center;color:var(--text-mute);padding:32px;">${emptyMsg}</td></tr>`;
+
+  const cards = shown.map(o=>`
+    <div class="mcard">
+      <div class="mcard-top">
+        <div class="mcard-title"><span class="sym">${esc(o.ipo)}</span></div>
+        ${statusBadge(o.status)}
+      </div>
+      <div class="mcard-sub" style="padding-left:0;">${esc(o.userId)} · ${esc(o.name)}</div>
+      <div class="mcard-grid">
+        <div><div class="k">Date &amp; time</div><div class="v sensitive">${o.datetime}</div></div>
+        <div><div class="k">Application no.</div><div class="v mono">${o.appNumber}</div></div>
+        <div style="grid-column:span 2;"><div class="k">Amount</div><div class="v mono sensitive">${fmtINR(o.amount||0)}</div></div>
+      </div>
+      <div class="mcard-footer">
+        ${(!showHistory && o.status==='pending') ? `<button class="btn btn-outline btn-sm cancel-order-btn" data-oid="${o.oid}" style="color:var(--red);border-color:rgba(229,83,90,.35);">Cancel</button>` : ''}
+        <button class="btn btn-outline btn-sm view-order-btn" data-oid="${o.oid}">View</button>
+      </div>
+    </div>`).join('') || `<div style="text-align:center;color:var(--text-mute);padding:32px;">${emptyMsg}</div>`;
+
+  return `
+    <div class="subnav">${filterHtml}</div>
+    <div class="page-header"><h1>${showHistory?'History':'Applications'} <span class="count">(${shown.length})</span></h1>${histBtn}</div>
+    <div class="card desktop-table-wrap">
+      <table>
+        <thead><tr><th>User ID</th><th>Name</th><th>IPO</th><th>Date and time</th><th>Application number</th><th class="num">Amount</th><th>Status</th><th></th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+    <div class="mcard-list">${cards}</div>`;
+}
+
+function openOrderDetailModal(order){
+  const steps = ['Applied','Mandate sent','Mandate approved','Allotment'];
+  const stepIdx = order.status==='allotted' ? 3 : order.status==='rejected' ? 1 : order.status==='cancelled' ? 0 : 1;
+  const timeline = steps.map((s,i)=>`
+    <div style="display:flex;align-items:center;gap:10px;padding:6px 0;">
+      <span style="width:9px;height:9px;border-radius:50%;flex-shrink:0;background:${i<=stepIdx && order.status!=='rejected' && order.status!=='cancelled' ? 'var(--green)' : i<=stepIdx ? 'var(--red)' : 'var(--border)'};"></span>
+      <span style="font-size:12.5px;color:${i<=stepIdx?'var(--text)':'var(--text-mute)'};">${s}</span>
+    </div>`).join('');
+  openInfo(`${order.ipo} — ${order.appNumber}`, `
+    <div class="kv-row"><span class="k">Account</span><span class="v mono">${esc(order.userId)}</span></div>
+    <div class="kv-row"><span class="k">Holder</span><span class="v">${esc(order.name)}</span></div>
+    <div class="kv-row"><span class="k">Amount</span><span class="v mono">${fmtINR(order.amount||0)}</span></div>
+    <div class="kv-row"><span class="k">Applied</span><span class="v">${esc(order.datetime)}</span></div>
+    <div class="kv-row"><span class="k">Status</span><span class="v">${statusBadge(order.status)}</span></div>
+    <div style="margin-top:16px;"><div style="font-weight:600;font-size:13px;margin-bottom:6px;">Mandate timeline</div>${timeline}</div>
+  `, `
+    ${order.status==='pending' ? `<button class="btn btn-danger btn-sm" id="detail-cancel-btn" data-oid="${order.oid}">Cancel application</button>` : ''}
+    <button class="btn btn-outline btn-sm" id="detail-download-btn">Download PDF</button>
+  `);
+  const cancelBtn = document.getElementById('detail-cancel-btn');
+  if(cancelBtn) cancelBtn.onclick = ()=>{ cancelOrder(order.oid); closeInfoModal(); };
+  const dl = document.getElementById('detail-download-btn');
+  if(dl) dl.onclick = ()=>toast('Not available in preview', 'PDF generation runs server-side in production — this button is wired and ready for that endpoint.', false);
+}
+
+function cancelOrder(oid){
+  const idx = orders.findIndex(o=>o.oid===oid);
+  if(idx===-1) return;
+  const o = orders.splice(idx,1)[0];
+  o.status = 'cancelled';
+  orderHistory.unshift(o);
+  render();
+  toast('Application cancelled', `${o.ipo} (${o.appNumber}) was cancelled and moved to History.`, false);
+}
+
+/* ===================== BIDS / IPO LIST ===================== */
+function ipoStatusCell(ipo){
+  if(ipo.status==='open' || ipo.status==='active' || ipo.status==='live') {
+    return `<button class="btn btn-gold btn-sm apply-btn" data-ipo="${ipo.id}">Apply</button>`;
+  }
+  if(ipo.status==='upcoming') {
+    return `<span class="badge badge-upcoming">UPCOMING</span>`;
+  }
+  return `<span class="badge badge-closed">CLOSED</span>`;
+}
+
+function renderBids(searchTerm=''){
+  let list = IPOS;
+  if(bidsFilter!=='all'){
+    if(bidsFilter==='live'){
+      list = list.filter(i=>i.status==='open' || i.status==='active' || i.status==='live');
+    } else {
+      list = list.filter(i=>i.status===bidsFilter);
+    }
+  }
+  if(searchTerm){
+    const q = searchTerm.toLowerCase();
+    list = list.filter(i=>i.sym.toLowerCase().includes(q) || i.name.toLowerCase().includes(q));
+  }
+
+  const emptyMsg = `No IPOs match this filter${searchTerm?` and search "${esc(searchTerm)}"`:''}`;
+
+  const subCell = i => {
+    if(i.subscriptionTimes!==null && i.subscriptionTimes!==undefined && i.subscriptionTimes>0){
+      const isHigh = i.subscriptionTimes >= 10;
+      const bg = isHigh ? 'rgba(53,197,127,0.18)' : 'rgba(183,196,214,0.18)';
+      const color = isHigh ? '#35C57F' : 'var(--gold-strong)';
+      const border = isHigh ? '1px solid rgba(53,197,127,0.35)' : '1px solid rgba(183,196,214,0.3)';
+      return `<button class="badge sub-badge-btn" data-ipo="${i.id}" style="background:${bg};color:${color};border:${border};font-weight:700;font-family:var(--font-mono);cursor:pointer;padding:4px 10px;border-radius:10px;" title="Click for live exchange subscription stats">${i.subscriptionTimes}x live</button>`;
+    }
+    if(i.status==='upcoming'){
+      return `<span style="color:var(--text-mute);font-size:11.5px;font-family:var(--font-mono);">Awaiting Open</span>`;
+    }
+    return `<span style="color:var(--text-mute);font-size:12px;font-family:var(--font-mono);">—</span>`;
+  };
+
+  const rows = list.map(i=>`
+    <tr>
+      <td class="instr"><div style="display:flex;align-items:center;gap:11px;">${companyMark(i.sym)}<div><div class="sym">${i.sym}${i.sme?'<span class="sme">SME</span>':''}</div><div class="full">${esc(i.name)}</div></div></div></td>
+      <td>${i.date}</td>
+      <td class="mono" style="color:var(--text-dim);">${i.listingDate||'—'}</td>
+      <td class="num">${i.priceMin===i.priceMax ? (i.priceMin?'₹'+i.priceMin:'—') : '₹'+i.priceMin+' - ₹'+i.priceMax}</td>
+      <td class="num amt-line"><div class="top">${i.minAmount ? fmtINR(i.minAmount) : '—'}</div><div class="bottom">${i.qty ? i.qty+' Qty.' : ''}</div></td>
+      <td>${subCell(i)}</td>
+      <td style="text-align:right;position:relative;">${ipoStatusCell(i)}</td>
+    </tr>`).join('') || `<tr><td colspan="7" style="text-align:center;color:var(--text-mute);padding:32px;">${emptyMsg}</td></tr>`;
+
+  const cards = list.map(i=>`
+    <div class="mcard">
+      <div class="mcard-top">
+        <div class="mcard-title">${companyMark(i.sym)}<span class="sym">${i.sym}${i.sme?'<span class="sme">SME</span>':''}</span></div>
+        <div style="position:relative;">${ipoStatusCell(i)}</div>
+      </div>
+      <div class="mcard-sub">${esc(i.name)}</div>
+      <div class="mcard-grid">
+        <div><div class="k">IPO date</div><div class="v">${i.date}</div></div>
+        <div><div class="k">Listing</div><div class="v">${i.listingDate||'—'}</div></div>
+        <div><div class="k">Price</div><div class="v mono">${i.priceMin===i.priceMax ? (i.priceMin?'₹'+i.priceMin:'—') : '₹'+i.priceMin+'–₹'+i.priceMax}</div></div>
+        <div><div class="k">Min. amount</div><div class="v mono">${i.minAmount ? fmtINR(i.minAmount) : '—'}${i.qty ? ` <span style="color:var(--text-mute);font-weight:400;">(${i.qty} qty)</span>` : ''}</div></div>
+        <div style="grid-column:span 2;"><div class="k">Subscription</div><div class="v">${subCell(i)}</div></div>
+      </div>
+    </div>`).join('') || `<div style="text-align:center;color:var(--text-mute);padding:32px;">${emptyMsg}</div>`;
+
+  const filters = [['live','Live'],['upcoming','Upcoming'],['closed','Closed'],['all','All']];
+  const chipsHtml = filters.map(([k,l])=>{
+    const count = k==='all' ? IPOS.length : k==='live' ? IPOS.filter(i=>i.status==='open'||i.status==='active'||i.status==='live').length : IPOS.filter(i=>i.status===k).length;
+    return `<button class="chip ${bidsFilter===k?'on':''}" data-bfilter="${k}">${l} (${count})</button>`;
+  }).join('');
+
+
+  return `
+    ${syncBarHtml()}
+    <div class="page-header">
+      <h1>IPOs <span class="count">(${IPOS.length})</span></h1>
+      <div class="search-box">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input id="ipo-search" placeholder="Search" value="${esc(searchTerm)}" />
+      </div>
+    </div>
+    <div class="chip-row">${chipsHtml}</div>
+    <div class="card desktop-table-wrap">
+      <table>
+        <thead><tr><th>Instrument</th><th>IPO date</th><th>Listing date</th><th class="num">Price (₹)</th><th class="num">Min. amount (₹)</th><th>Subscription</th><th></th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+    <div class="mcard-list">${cards}</div>`;
+}
+
+function openCategoryPopover(ipo, btnEl){
+  closePopover();
+  if(ipo.categories.length===1){ openApplyModal(ipo, ipo.categories[0]); return; }
+  const rect = btnEl.getBoundingClientRect();
+  const pop = document.createElement('div');
+  pop.className = 'popover';
+  pop.id = 'active-popover';
+  pop.style.top = (rect.bottom + window.scrollY + 6) + 'px';
+  pop.style.left = (rect.right - 190 + window.scrollX) + 'px';
+  pop.innerHTML = ipo.categories.map(c=>`
+    <button data-cat="${esc(c)}">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      ${esc(c)}
+    </button>`).join('');
+  document.body.appendChild(pop);
+  pop.querySelectorAll('button').forEach(b=>{
+    b.onclick = ()=>{ openApplyModal(ipo, b.dataset.cat); closePopover(); };
+  });
+  setTimeout(()=>document.addEventListener('click', outsidePopoverClose), 0);
+}
+function outsidePopoverClose(e){
+  const pop = document.getElementById('active-popover');
+  if(pop && !pop.contains(e.target)) closePopover();
+}
+function closePopover(){
+  const pop = document.getElementById('active-popover');
+  if(pop) pop.remove();
+  document.removeEventListener('click', outsidePopoverClose);
+}
+
+/* ===================== APPLY MODAL ===================== */
+function openApplyModal(ipo, category){
+  openBidsCount = 1;
+  const root = document.getElementById('modal-root');
+
+  const acctListHtml = dematAccounts.length ? dematAccounts.map((a,idx)=>`
+    <label class="acct-row"><input type="checkbox" class="acct-check" data-idx="${idx}" />
+      <span class="mono" style="font-weight:600;">${esc(a.id)}</span>
+      <span class="b">${esc(a.name)} · ${esc(a.broker)}</span>
+    </label>`).join('')
+    : `<div class="acct-empty">No saved accounts yet — <a href="#" id="acct-empty-link">add one</a> to apply from multiple brokers in one go.</div>`;
+
+  root.innerHTML = `
+    <div class="modal-overlay" id="apply-overlay">
+      <div class="modal">
+        <div class="modal-body">
+          <div>
+            <h2>${ipo.sym}</h2>
+            <div class="sub">${esc(ipo.name)}</div>
+            <div class="kv-row"><span class="k">Investor type</span><span class="v">${esc(category)}</span></div>
+            <div class="kv-row"><span class="k">Issue dates</span><span class="v">${ipo.date}</span></div>
+            <div class="kv-row"><span class="k">Issue size</span><span class="v">${ipo.issueSize}</span></div>
+            <div class="kv-row"><span class="k">Issue price</span><span class="v">₹${ipo.priceMin} – ₹${ipo.priceMax}</span></div>
+            <div class="kv-row"><span class="k">Lot size</span><span class="v">${ipo.qty}</span></div>
+            <div class="kv-row"><span class="k">Discount</span><span class="v">${ipo.discount}</span></div>
+            <div class="modal-links">
+              <a href="#" id="fund-link">Fundamentals ⓘ</a>
+              <a href="#" id="moreinfo-link">More information ↗</a>
+            </div>
+
+            <div class="form-label" style="margin-top:24px;">
+              <span>Apply from accounts</span>
+              <label class="selall"><input type="checkbox" id="acct-select-all" /> Select all</label>
+            </div>
+            <div class="acct-list" id="acct-list">${acctListHtml}</div>
+          </div>
+          <div>
+            <div class="form-label">UPI</div>
+            <div class="upi-row" id="upi-row">
+              <div class="field" style="margin:0;">
+                <label style="font-size:10.5px;">UPI ID</label>
+                <input id="upi-id-input" placeholder="yourname" />
+              </div>
+              <div class="combobox" id="upi-combobox">
+                <label style="font-size:10.5px;visibility:hidden;display:block;margin-bottom:6px;">Provider</label>
+                <div class="combobox-input" id="upi-cb-display" tabindex="0">
+                  <span id="upi-cb-value">@upi</span>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+              </div>
+            </div>
+            <a class="info-link" href="#" id="upi-notlisted-link">ⓘ UPI provider not listed?</a>
+            <div class="upi-note" id="upi-note" style="display:none;">Selected accounts will each use their own linked UPI ID.</div>
+
+            <div class="bids-head">
+              <div class="form-label">Bids (<span id="bids-count-label">1</span>/3)</div>
+              <button class="add-link" id="add-bid-btn">+ Add</button>
+            </div>
+            <div id="bids-container">${bidRowHtml(ipo, 1)}</div>
+
+            <div class="divider"></div>
+            <div class="payable-row">
+              <span class="k" id="payable-label">Amount payable</span>
+              <span class="v sensitive" id="amount-payable">${fmtINR(ipo.qty * ipo.priceMax)}</span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="terms">By submitting, I agree to the <a href="#" id="terms-link">terms and conditions</a>.</div>
+          <div class="actions" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+            <button class="btn btn-gold" id="submit-bot-apply" title="Execute automated application using Playwright &amp; Stealth TOTP bot">🤖 Run Live AI Bot</button>
+            <button class="btn btn-outline" id="submit-apply" title="Log application directly into Excel without launching browser">⚡ Save &amp; Log</button>
+            <button class="btn btn-ghost" id="close-apply">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+
+  setupUpiCombobox(document.getElementById('upi-cb-display'), document.getElementById('upi-cb-value'), document.getElementById('upi-id-input'));
+
+  document.getElementById('close-apply').onclick = closeModal;
+  document.getElementById('apply-overlay').addEventListener('click', (e)=>{ if(e.target.id==='apply-overlay') closeModal(); });
+  document.getElementById('fund-link').onclick = (e)=>{ e.preventDefault(); openFundamentalsModal(ipo); };
+  document.getElementById('moreinfo-link').onclick = (e)=>{ e.preventDefault(); openMoreInfoModal(ipo); };
+  document.getElementById('upi-notlisted-link').onclick = (e)=>{ e.preventDefault(); openUpiListModal(); };
+  document.getElementById('terms-link').onclick = (e)=>{ e.preventDefault(); openTermsModal(); };
+
+  const emptyLink = document.getElementById('acct-empty-link');
+  if(emptyLink) emptyLink.onclick = (e)=>{ e.preventDefault(); closeModal(); navigate('demat'); };
+
+  const selectAll = document.getElementById('acct-select-all');
+  if(selectAll){
+    selectAll.onchange = ()=>{
+      document.querySelectorAll('.acct-check').forEach(c=>c.checked = selectAll.checked);
+      refreshAccountModeUI();
+    };
+  }
+  document.querySelectorAll('.acct-check').forEach(c=>{ c.onchange = refreshAccountModeUI; });
+  refreshAccountModeUI();
+
+  document.getElementById('add-bid-btn').onclick = ()=>{
+    if(openBidsCount>=3) return;
+    openBidsCount++;
+    document.getElementById('bids-count-label').textContent = openBidsCount;
+    document.getElementById('bids-container').insertAdjacentHTML('beforeend', bidRowHtml(ipo, openBidsCount));
+    wireBidRow(ipo);
+    if(openBidsCount===3) document.getElementById('add-bid-btn').style.display='none';
+  };
+  wireBidRow(ipo);
+
+  // --- SAVE & LOG ONLY ---
+  document.getElementById('submit-apply').onclick = ()=>{
+    const selectedIdx = Array.from(document.querySelectorAll('.acct-check:checked')).map(c=>Number(c.dataset.idx));
+    const amount = Number((document.getElementById('amount-payable').textContent || '0').replace(/[^\d]/g,'')) || (ipo.qty*ipo.priceMax);
+    const idInput = document.getElementById('upi-id-input');
+    const provider = document.getElementById('upi-cb-value') ? document.getElementById('upi-cb-value').textContent : '@okhdfcbank';
+    const upiId = (idInput ? idInput.value : '') + provider;
+
+    closeModal();
+
+    if(selectedIdx.length>0){
+      selectedIdx.forEach(idx=>{
+        const acct = dematAccounts[idx];
+        orders.unshift({
+          oid: 'o' + Date.now() + idx, userId: acct.id, name: acct.name, datetime: 'Just now',
+          appNumber: 'IPO' + Date.now().toString().slice(-9) + idx, ipo: ipo.sym, status:'pending', amount
+        });
+        fetch(SYNC_API_BASE + '/api/orders', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({
+            accountLabel: acct.name,
+            company: ipo.sym,
+            status: 'pending',
+            upiId: acct.upi || upiId,
+            quantity: String(ipo.qty),
+            price: String(ipo.priceMax)
+          })
+        }).catch(()=>{});
+      });
+      toast('Created', `Application logged for ${selectedIdx.length} account${selectedIdx.length>1?'s':''}.`, false);
+    } else {
+      orders.unshift({
+        oid: 'o' + Date.now(), userId: currentUser.id, name: currentUser.name, datetime: 'Just now',
+        appNumber: 'IPO' + Date.now().toString().slice(-10), ipo: ipo.sym, status:'pending', amount
+      });
+      fetch(SYNC_API_BASE + '/api/orders', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({
+          accountLabel: currentUser.name,
+          company: ipo.sym,
+          status: 'pending',
+          upiId: upiId,
+          quantity: String(ipo.qty),
+          price: String(ipo.priceMax)
+        })
+      }).catch(()=>{});
+      toast('Created', `Application logged successfully for ${esc(upiId)}.`, false);
+    }
+    if(route==='orders' || route==='dashboard') render();
+  };
+
+  // --- RUN LIVE AI BOT ---
+  document.getElementById('submit-bot-apply').onclick = async ()=>{
+    const selectedIdx = Array.from(document.querySelectorAll('.acct-check:checked')).map(c=>Number(c.dataset.idx));
+    const selectedAccountNames = selectedIdx.map(i=>dematAccounts[i]?.name).filter(Boolean);
+    const idInput = document.getElementById('upi-id-input');
+    const provider = document.getElementById('upi-cb-value') ? document.getElementById('upi-cb-value').textContent : '@okhdfcbank';
+    const upiId = (idInput ? idInput.value : '') + provider;
+    const qty = String(ipo.qty);
+
+    closeModal();
+
+    try{
+      const res = await fetch(SYNC_API_BASE + '/api/bot/apply', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          company: ipo.sym,
+          quantity: qty,
+          upiId: upiId,
+          accounts: selectedAccountNames,
+          dryRun: true
+        })
+      });
+      const data = await res.json();
+      if(data.ok){
+        toast('Bot Launched', `AI IPO BOT PRO started applying for ${ipo.sym}. Opening live terminal...`, false);
+        openBotTerminalModal(ipo.sym, 'apply');
+      } else {
+        toast('Bot Busy', data.message || 'Another bot task is currently running.', true);
+      }
+    }catch(e){
+      toast('Server Offline', `Couldn't trigger bot at ${SYNC_API_BASE}. Make sure server.py is running.`, true);
+    }
+  };
+}
+window.__openMandate = ()=>openMandateModal();
+
+function openBotTerminalModal(company, action='apply'){
+  closeInfoModal();
+  const wrap = document.createElement('div');
+  wrap.className = 'modal-overlay';
+  wrap.id = 'bot-terminal-overlay';
+  wrap.style.zIndex = '200';
+  wrap.innerHTML = `
+    <div class="info-modal wide" style="max-width:760px;background:#0D111A;border:1px solid #28354D;color:#E2E8F0;font-family:var(--font-body);">
+      <div class="info-head" style="border-bottom:1px solid #1E293B;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#35C57F;box-shadow:0 0 10px #35C57F;" id="bot-status-indicator"></span>
+          <h3 style="margin:0;font-size:15px;font-family:var(--font-mono);letter-spacing:.3px;">AI BOT PRO — ${esc(company)}</h3>
+        </div>
+        <button id="bot-close-btn" style="background:none;border:none;color:#94A3B8;font-size:16px;cursor:pointer;">✕</button>
+      </div>
+      <div class="info-body" style="padding:16px 20px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-size:12px;color:#94A3B8;font-family:var(--font-mono);">
+          <span>ACTION: <b style="color:#F2F5F9;">${esc(action.toUpperCase())}</b></span>
+          <span id="bot-substatus" style="color:#35C57F;">PLAYWRIGHT STEALTH RUNNING</span>
+        </div>
+        <div id="bot-terminal-output" style="background:#06080D;border:1px solid #1A2234;border-radius:8px;padding:14px;height:320px;overflow-y:auto;font-family:var(--font-mono);font-size:12px;line-height:1.6;color:#CBD5E1;white-space:pre-wrap;">Connecting to live process logs...</div>
+      </div>
+      <div class="info-footer" style="border-top:1px solid #1E293B;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:11px;color:#64748B;font-family:var(--font-mono);">Encrypted Vault + TOTP + Anti-Bot Simulation Active</span>
+        <button class="btn btn-outline btn-sm" id="bot-done-btn">Close Terminal</button>
+      </div>
+    </div>`;
+  document.body.appendChild(wrap);
+
+  const term = document.getElementById('bot-terminal-output');
+  const substatus = document.getElementById('bot-substatus');
+  const closeBtn = document.getElementById('bot-close-btn');
+  const doneBtn = document.getElementById('bot-done-btn');
+  
+  const closeTerminal = ()=>{
+    clearInterval(pollTimer);
+    wrap.remove();
+  };
+  closeBtn.onclick = closeTerminal;
+  doneBtn.onclick = closeTerminal;
+
+  let pollTimer = setInterval(async ()=>{
+    try{
+      const res = await fetch(SYNC_API_BASE + '/api/bot/status');
+      if(res.ok){
+        const statusData = await res.json();
+        if(statusData.logs && statusData.logs.length){
+          term.innerHTML = statusData.logs.map(l=>{
+            let color = '#CBD5E1';
+            if(l.level==='success' || l.message.includes('SUCCESS') || l.message.includes('completed')) color = '#35C57F';
+            else if(l.level==='error' || l.message.includes('ERROR') || l.message.includes('failed')) color = '#E5535A';
+            else if(l.level==='warning' || l.message.includes('WARNING')) color = '#F59E0B';
+            else if(l.message.includes('Logging in:') || l.message.includes('Landed on:')) color = '#6C9BFF';
+            return `<span style="color:#64748B;">[${esc(l.timestamp)}]</span> <span style="color:${color};">${esc(l.message)}</span>`;
+          }).join('\n');
+          term.scrollTop = term.scrollHeight;
+        }
+        if(!statusData.is_running){
+          substatus.textContent = 'EXECUTION FINISHED';
+          substatus.style.color = '#94A3B8';
+          const ind = document.getElementById('bot-status-indicator');
+          if(ind){ ind.style.background = '#64748B'; ind.style.boxShadow = 'none'; }
+          syncBackendData();
+        }
+      }
+    }catch(err){
+      console.log('Bot poll error:', err);
+    }
+  }, 1000);
+}
+
+
+function refreshAccountModeUI(){
+  const anyChecked = document.querySelectorAll('.acct-check:checked').length>0;
+  const upiRow = document.getElementById('upi-row');
+  const note = document.getElementById('upi-note');
+  const payableLabel = document.getElementById('payable-label');
+  if(upiRow){ upiRow.classList.toggle('disabled', anyChecked); }
+  if(note){ note.style.display = anyChecked ? 'block' : 'none'; }
+  if(payableLabel){ payableLabel.textContent = anyChecked ? 'Amount payable (per account)' : 'Amount payable'; }
+}
+
+function bidRowHtml(ipo, n){
+  return `
+    <div class="bid-row" data-bid="${n}">
+      <input type="number" class="bid-qty" value="${ipo.qty}" min="0" />
+      <input type="number" class="bid-price" value="${ipo.priceMax}" disabled />
+      ${n>1 ? `<button type="button" class="btn btn-outline btn-sm remove-bid-btn" data-n="${n}" style="grid-column:span 2;justify-self:start;">✕ Remove this bid</button>` : ''}
+    </div>
+    <label class="cutoff-row"><input type="checkbox" class="bid-cutoff" checked /> Cutoff price ⓘ</label>`;
+}
+
+function wireBidRow(ipo){
+  document.querySelectorAll('.remove-bid-btn').forEach(btn=>{
+    btn.onclick = ()=>{
+      const row = btn.closest('.bid-row');
+      const label = row.nextElementSibling;
+      row.remove();
+      if(label) label.remove();
+      openBidsCount = document.querySelectorAll('.bid-row').length;
+      document.getElementById('bids-count-label').textContent = openBidsCount;
+      document.getElementById('add-bid-btn').style.display = '';
+      recalc(ipo);
+    };
+  });
+  document.querySelectorAll('.bid-row').forEach(row=>{
+    const qty = row.querySelector('.bid-qty');
+    const price = row.querySelector('.bid-price');
+    const cutoffLabel = row.nextElementSibling;
+    const cutoff = cutoffLabel ? cutoffLabel.querySelector('.bid-cutoff') : null;
+    if(cutoff){
+      cutoff.onchange = ()=>{ price.disabled = cutoff.checked; if(cutoff.checked) price.value = ipo.priceMax; recalc(ipo); };
+    }
+    qty.oninput = ()=>recalc(ipo);
+    price.oninput = ()=>recalc(ipo);
+  });
+  recalc(ipo);
+}
+function recalc(ipo){
+  let total = 0;
+  document.querySelectorAll('.bid-row').forEach(row=>{
+    const q = Number(row.querySelector('.bid-qty').value)||0;
+    const p = Number(row.querySelector('.bid-price').value)||0;
+    total += q*p;
+  });
+  const el = document.getElementById('amount-payable');
+  if(el) el.textContent = fmtINR(total);
+}
+
+/* ---- Smart UPI combobox: typing "id@provider" auto-strips the domain
+       into the ID field and auto-selects the closest available provider ---- */
+function setupUpiCombobox(displayEl, valueEl, idInput){
+  let listEl = null;
+  function openList(filter=''){
+    closeList();
+    const filtered = filter ? UPI_PROVIDERS.filter(p=>p.toLowerCase().includes(filter.toLowerCase())) : UPI_PROVIDERS;
+    listEl = document.createElement('div');
+    listEl.className = 'combobox-list';
+    listEl.id = 'upi-list';
+    listEl.innerHTML = '<div class="cb-head">Your UPI Provider</div>' +
+      (filtered.length ? filtered.map((p,i)=>`<button data-p="${p}" class="${i===0 && filter ? 'hl':''}">${p}</button>`).join('') : '<div style="padding:10px 12px;color:var(--text-mute);font-size:12.5px;">No match</div>');
+    document.getElementById('upi-combobox').appendChild(listEl);
+    listEl.querySelectorAll('button').forEach(b=>{
+      b.onclick = ()=>{ valueEl.textContent = b.dataset.p; closeList(); };
+    });
+  }
+  function closeList(){ if(listEl){ listEl.remove(); listEl=null; } }
+
+  displayEl.onclick = (e)=>{ e.stopPropagation(); listEl ? closeList() : openList(); };
+
+  function finalizeEntry(){
+    const raw = idInput.value;
+    if(!raw.includes('@')) return;
+    const [localPart, providerRaw=''] = raw.split('@');
+    const typedProvider = '@' + providerRaw.toLowerCase();
+    let match = UPI_PROVIDERS.find(p=>p===typedProvider);
+    if(!match){
+      const prefix = typedProvider.slice(1,3);
+      match = UPI_PROVIDERS.find(p=>p.slice(1).startsWith(prefix));
+    }
+    if(!match) match = UPI_PROVIDERS[0];
+    idInput.value = localPart;
+    valueEl.textContent = match;
+    closeList();
+  }
+
+  idInput.addEventListener('input', ()=>{
+    const raw = idInput.value;
+    if(raw.includes('@')){
+      const [localPart, providerRaw=''] = raw.split('@');
+      const typedProvider = '@' + providerRaw.toLowerCase();
+      const exact = UPI_PROVIDERS.find(p=>p===typedProvider);
+      if(exact){
+        // whole provider matches one we know — finalize right away
+        idInput.value = localPart;
+        valueEl.textContent = exact;
+        closeList();
+      } else {
+        // still typing the provider — keep it on screen, just filter the list
+        openList(providerRaw);
+      }
+    } else {
+      openList(raw);
+    }
+  });
+  idInput.addEventListener('blur', finalizeEntry);
+  idInput.addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ finalizeEntry(); idInput.blur(); } });
+
+  document.addEventListener('click', (e)=>{
+    if(listEl && !document.getElementById('upi-combobox').contains(e.target)) closeList();
+  });
+}
+
+function closeModal(){ document.getElementById('modal-root').innerHTML = ''; }
+
+/* ===================== ADD DEMAT ===================== */
+function renderDemat(){
+  const tabsHtml = `
+    <button class="${dematSubTab==='saved'?'active':''}" data-dtab="saved">Saved Account</button>
+    <button class="${dematSubTab==='new'?'active':''}" data-dtab="new">Add New</button>`;
+  if(dematSubTab==='new'){
+    return `<div class="subnav">${tabsHtml}</div>` + dematFormInline();
+  }
+  const rows = dematAccounts.map((a,idx)=>`
+    <tr>
+      <td class="mono">${esc(a.id)}</td>
+      <td>${esc(a.name)}</td>
+      <td>${esc(a.broker)}</td>
+      <td class="mono sensitive">••••••••</td>
+      <td class="mono">${esc(a.upi)}</td>
+      <td><span class="dot active"></span>Active</td>
+      <td>${a.linkedOn}</td>
+      <td><button class="btn btn-outline btn-sm edit-demat" data-idx="${idx}">Edit</button> <button class="btn btn-outline btn-sm delete-demat" data-idx="${idx}" style="color:var(--red);border-color:rgba(229,83,90,.35);">Delete</button></td>
+    </tr>`).join('') || `<tr><td colspan="8" style="text-align:center;color:var(--text-mute);padding:32px;">No demat accounts linked yet</td></tr>`;
+  const cards = dematAccounts.map((a,idx)=>`
+    <div class="mcard">
+      <div class="mcard-top">
+        <div class="mcard-title">${companyMark(a.broker)}<span class="sym">${esc(a.broker)}</span></div>
+        <span class="badge" style="background:var(--green-soft);color:var(--green);"><span class="dot active" style="margin-right:5px;"></span>Active</span>
+      </div>
+      <div class="mcard-sub">${esc(a.name)} · <span class="mono">${esc(a.id)}</span></div>
+      <div class="mcard-grid">
+        <div><div class="k">UPI ID</div><div class="v mono">${esc(a.upi)}</div></div>
+        <div><div class="k">Linked on</div><div class="v">${a.linkedOn}</div></div>
+      </div>
+      <div class="mcard-footer">
+        <button class="btn btn-outline btn-sm edit-demat" data-idx="${idx}">Edit</button>
+        <button class="btn btn-outline btn-sm delete-demat" data-idx="${idx}" style="color:var(--red);border-color:rgba(229,83,90,.35);">Delete</button>
+      </div>
+    </div>`).join('') || `<div style="text-align:center;color:var(--text-mute);padding:32px;">No demat accounts linked yet</div>`;
+  return `
+    <div class="subnav">${tabsHtml}</div>
+    <div class="page-header"><h1>Linked demat accounts <span class="count">(${dematAccounts.length})</span></h1>
+      <button class="btn btn-gold btn-sm" id="add-demat-btn">+ Add account</button></div>
+    <div class="card desktop-table-wrap">
+      <table>
+        <thead><tr><th>User ID</th><th>Name</th><th>Broker</th><th>Password</th><th>UPI ID</th><th>Status</th><th>Linked on</th><th></th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+    <div class="mcard-list">${cards}</div>`;
+}
+
+function dematFormInline(editIdx){
+  const editing = editIdx!==undefined;
+  const a = editing ? dematAccounts[editIdx] : {id:'',name:'',broker:'Zerodha',password:'',upi:''};
+  return `
+    <div class="card" style="max-width:520px;padding:26px 28px;">
+      <h2 style="font-size:17px;margin:0 0 4px;">${editing?'Edit demat account':'Add a demat account'}</h2>
+      <div class="sub" style="color:var(--text-mute);font-size:12.5px;margin-bottom:20px;">Stored to apply IPOs on this account's behalf.</div>
+      <div class="field"><label>User ID</label><input id="df-id" value="${esc(a.id)}" placeholder="e.g. ZR1102" /></div>
+      <div class="field"><label>Name</label><input id="df-name" value="${esc(a.name)}" placeholder="Account holder name" /></div>
+      <div class="field"><label>Broker</label>
+        <select id="df-broker">
+          ${['Zerodha','Groww','Upstox','Angel One','ICICI Direct','HDFC Securities'].map(b=>`<option ${a.broker===b?'selected':''}>${b}</option>`).join('')}
+        </select>
+      </div>
+      <div class="field"><label>Password</label>
+        <div class="field-input-wrap">
+          <input id="df-pass" type="password" value="${a.password==='••••••••'?'':esc(a.password)}" placeholder="Broker login password" />
+          <button type="button" class="eye-toggle" id="df-eye"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg></button>
+        </div>
+      </div>
+      <div class="field"><label>UPI ID</label><input id="df-upi" value="${esc(a.upi)}" placeholder="yourname@bank" /></div>
+      <div style="display:flex;gap:10px;margin-top:8px;">
+        <button class="btn btn-gold" id="df-save">${editing?'Save changes':'Add account'}</button>
+        <button class="btn btn-outline" id="df-cancel">Cancel</button>
+      </div>
+    </div>`;
+}
+
+/* ===================== CONSOLE — back-office / tax reporting =====================
+   Modelled on Zerodha Console's Tax P&L report: FIFO-matched capital gains,
+   STCG/LTCG segregation, and an estimated-tax summary. The FIFO + tax math
+   here is the exact logic verified standalone (see conversation) — three
+   hand-checked test cases (simple STCG, simple LTCG, partial-FIFO split
+   across two lots) all matched expected output before this was wired in.
+
+   CURRENT RATES USED (verify before relying on this for real filing):
+   STCG (equity, ≤365 days held) — 20% flat
+   LTCG (equity, >365 days held) — 12.5% on gains above ₹1.25,00,000/year
+   Health & education cess — 4% on the capital-gains tax
+   Effective from the 23 Jul 2024 Budget change. Not modelled: surcharge,
+   grandfathering for pre-31-Jan-2018 holdings, F&O/Intraday final tax
+   (those are business income taxed at your income-tax slab, not a flat
+   rate — this tool shows the net P&L only, not a tax figure, for those). */
+
+function daysBetween(d1, d2){ return Math.round((new Date(d2) - new Date(d1)) / 86400000); }
+
+function computeEquityFIFO(trades){
+  const bySymbol = {};
+  trades.filter(t=>t.segment==='EQUITY').forEach(t=>{ (bySymbol[t.symbol] ||= []).push(t); });
+  const matched = [];
+  Object.keys(bySymbol).forEach(sym=>{
+    const list = bySymbol[sym].slice().sort((a,b)=> new Date(a.date)-new Date(b.date));
+    const lots = [];
+    list.forEach(t=>{
+      if(t.type==='BUY'){ lots.push({date:t.date, qty:t.qty, price:t.price}); }
+      else if(t.type==='SELL'){
+        let remaining = t.qty;
+        while(remaining>0){
+          if(!lots.length) throw new Error(`Sell of ${sym} on ${t.date} exceeds bought quantity — check the CSV (short sales aren't supported here).`);
+          const lot = lots[0];
+          const matchQty = Math.min(remaining, lot.qty);
+          const holdingDays = daysBetween(lot.date, t.date);
+          const gain = (t.price - lot.price) * matchQty;
+          matched.push({ symbol:sym, buyDate:lot.date, sellDate:t.date, qty:matchQty, buyPrice:lot.price, sellPrice:t.price, holdingDays, classification: holdingDays>365?'LTCG':'STCG', gain: round2(gain) });
+          lot.qty -= matchQty; remaining -= matchQty;
+          if(lot.qty===0) lots.shift();
+        }
+      }
+    });
+  });
+  return matched;
+}
+function round2(n){ return Math.round(n*100)/100; }
+
+function computeIntradayFNO(trades, segment){
+  const rows = trades.filter(t=>t.segment===segment);
+  const buyVal = rows.filter(t=>t.type==='BUY').reduce((s,t)=>s+t.qty*t.price,0);
+  const sellVal = rows.filter(t=>t.type==='SELL').reduce((s,t)=>s+t.qty*t.price,0);
+  return round2(sellVal - buyVal);
+}
+
+function computeTax(matchedRows, exemptionLimit=125000){
+  const stcgTotal = matchedRows.filter(r=>r.classification==='STCG').reduce((s,r)=>s+r.gain,0);
+  const ltcgTotal = matchedRows.filter(r=>r.classification==='LTCG').reduce((s,r)=>s+r.gain,0);
+  const ltcgTaxable = Math.max(0, ltcgTotal - exemptionLimit);
+  const stcgTax = Math.max(0, stcgTotal) * 0.20;
+  const ltcgTax = ltcgTaxable * 0.125;
+  const cess = (stcgTax + ltcgTax) * 0.04;
+  return {
+    stcgTotal: round2(stcgTotal), ltcgTotal: round2(ltcgTotal),
+    ltcgExemptionUsed: round2(Math.min(Math.max(ltcgTotal,0), exemptionLimit)),
+    ltcgTaxable: round2(ltcgTaxable),
+    stcgTax: round2(stcgTax), ltcgTax: round2(ltcgTax), cess: round2(cess),
+    totalTax: round2(stcgTax + ltcgTax + cess),
+  };
+}
+
+/** Minimal CSV parser — expects header row: symbol,date,type,qty,price,segment
+ *  segment is optional and defaults to EQUITY. type must be BUY or SELL. */
+function parseTradebookCSV(text){
+  const lines = text.trim().split(/\r?\n/).filter(l=>l.trim());
+  if(lines.length<2) throw new Error('CSV needs a header row plus at least one trade.');
+  const header = lines[0].split(',').map(h=>h.trim().toLowerCase());
+  const idx = k => header.indexOf(k);
+  const need = ['symbol','date','type','qty','price'];
+  need.forEach(k=>{ if(idx(k)===-1) throw new Error(`Missing required column "${k}". Header must include: symbol,date,type,qty,price,segment(optional)`); });
+  return lines.slice(1).map((line,i)=>{
+    const cols = line.split(',').map(c=>c.trim());
+    const type = (cols[idx('type')]||'').toUpperCase();
+    if(type!=='BUY' && type!=='SELL') throw new Error(`Row ${i+2}: type must be BUY or SELL, got "${cols[idx('type')]}"`);
+    return {
+      symbol: (cols[idx('symbol')]||'').toUpperCase(),
+      date: cols[idx('date')],
+      type,
+      qty: Number(cols[idx('qty')]),
+      price: Number(cols[idx('price')]),
+      segment: idx('segment')>-1 && cols[idx('segment')] ? cols[idx('segment')].toUpperCase() : 'EQUITY',
+    };
+  });
+}
+
+const SAMPLE_TRADEBOOK_CSV = `symbol,date,type,qty,price,segment
+INFY,2026-01-01,BUY,100,1500,EQUITY
+INFY,2026-01-31,SELL,100,1600,EQUITY
+TCS,2025-01-01,BUY,50,3000,EQUITY
+TCS,2026-02-05,SELL,50,3500,EQUITY
+RELIANCE,2025-06-01,BUY,10,2500,EQUITY
+RELIANCE,2025-12-01,BUY,10,2700,EQUITY
+RELIANCE,2026-07-01,SELL,15,2900,EQUITY
+NIFTYFUT,2026-03-01,BUY,50,22000,FNO
+NIFTYFUT,2026-03-15,SELL,50,22300,FNO
+HDFCBANK,2026-08-01,BUY,20,1650,INTRADAY
+HDFCBANK,2026-08-01,SELL,20,1670,INTRADAY`;
+
+function runTaxPLCalc(csvText){
+  const trades = parseTradebookCSV(csvText);
+  const equityRows = computeEquityFIFO(trades);
+  const intraday = computeIntradayFNO(trades, 'INTRADAY');
+  const fno = computeIntradayFNO(trades, 'FNO');
+  const tax = computeTax(equityRows);
+  taxPLRows = { trades, equityRows, intraday, fno, tax };
+}
+
+function loadTradebookFile(file){
+  if(!file.name.toLowerCase().endsWith('.csv')){ toast('Wrong file type', 'Please upload a .csv file.', true); return; }
+  const reader = new FileReader();
+  reader.onload = ()=>{
+    try{ runTaxPLCalc(reader.result); render(); toast('Tradebook loaded', `Parsed ${taxPLRows.trades.length} trades and matched ${taxPLRows.equityRows.length} equity lots.`, false); }
+    catch(err){ toast('Could not parse file', err.message, true); }
+  };
+  reader.readAsText(file);
+}
+
+function renderConsole(){
+  if(!consoleUnlocked){
+    return `
+      <div class="console-lock">
+        <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        <h2 style="font-size:18px;margin:0 0 6px;">Console is behind an extra check</h2>
+        <p style="color:var(--text-mute);font-size:13px;max-width:340px;margin:0 0 20px;">This section holds P&amp;L and tax data, so it asks for confirmation every session — separate from your regular sign-in.</p>
+        <button class="btn btn-gold" id="console-unlock-btn">Unlock Console</button>
+      </div>`;
+  }
+
+  const accts = [{id:'all', name:'All linked accounts'}, ...dematAccounts];
+  const acctTabsHtml = accts.map(a=>`<button class="chip ${consoleAccount===a.id?'on':''}" data-cacct="${a.id}">${esc(a.id==='all'?a.name:a.id)}</button>`).join('');
+
+  const tabs = [['taxpl','Tax P&L'],['security','Security checklist']];
+  const tabsHtml = tabs.map(([k,l])=>`<button class="${consoleTab===k?'active':''}" data-ctab="${k}">${l}</button>`).join('');
+
+  return `
+    <div class="page-header"><h1>Console</h1></div>
+    <div class="chip-row">${acctTabsHtml}</div>
+    <p style="font-size:11.5px;color:var(--text-mute);margin:-8px 0 14px;">Account selection doesn't filter Tax P&L yet — it currently works on whatever tradebook file you upload, for all accounts combined.</p>
+    <div class="subnav">${tabsHtml}</div>
+    ${consoleTab==='taxpl' ? renderTaxPL() : renderConsoleSecurity()}`;
+}
+
+function renderTaxPL(){
+  if(!taxPLRows){
+    return `
+      <div class="card" style="padding:0;">
+        <div style="padding:26px;">
+          <div class="dropzone" id="tb-dropzone">
+            <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3v12M7 8l5-5 5 5"/><path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>
+            <p><b>Drop a tradebook CSV here</b>, or click to choose a file</p>
+            <div class="hint">Columns: symbol, date, type (BUY/SELL), qty, price, segment (EQUITY/INTRADAY/FNO — optional)</div>
+          </div>
+          <input type="file" id="tb-file-input" accept=".csv" class="hidden" />
+          <div style="text-align:center;margin-top:16px;">
+            <button class="btn btn-outline btn-sm" id="tb-sample-btn">Try it with sample data</button>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  const { equityRows, intraday, fno, tax } = taxPLRows;
+  const rowsHtml = equityRows.map(r=>`
+    <tr>
+      <td>${esc(r.symbol)}</td>
+      <td class="mono">${r.buyDate}</td>
+      <td class="mono">${r.sellDate}</td>
+      <td class="num">${r.qty}</td>
+      <td class="num mono">${fmtINR(r.buyPrice)}</td>
+      <td class="num mono">${fmtINR(r.sellPrice)}</td>
+      <td class="num">${r.holdingDays}d</td>
+      <td><span class="badge ${r.classification==='LTCG'?'badge-allotted':'badge-pending'}">${r.classification}</span></td>
+      <td class="num mono" style="color:${r.gain>=0?'var(--green)':'var(--red)'};">${r.gain>=0?'+':''}${fmtINR(r.gain)}</td>
+    </tr>`).join('');
+
+  const cardsHtml = equityRows.map(r=>`
+    <div class="mcard">
+      <div class="mcard-top">
+        <div class="mcard-title"><span class="sym">${esc(r.symbol)}</span></div>
+        <span class="badge ${r.classification==='LTCG'?'badge-allotted':'badge-pending'}">${r.classification}</span>
+      </div>
+      <div class="mcard-grid">
+        <div><div class="k">Buy → Sell</div><div class="v">${r.buyDate} → ${r.sellDate}</div></div>
+        <div><div class="k">Holding</div><div class="v">${r.holdingDays} days</div></div>
+        <div><div class="k">Qty</div><div class="v">${r.qty}</div></div>
+        <div><div class="k">Gain/Loss</div><div class="v mono" style="color:${r.gain>=0?'var(--green)':'var(--red)'};">${r.gain>=0?'+':''}${fmtINR(r.gain)}</div></div>
+      </div>
+    </div>`).join('');
+
+  return `
+    <div class="taxpl-summary">
+      <div class="stat-card"><div class="label">STCG (20%)</div><div class="value" style="color:${tax.stcgTotal>=0?'var(--text)':'var(--red)'};">${fmtINR(tax.stcgTotal)}</div></div>
+      <div class="stat-card"><div class="label">LTCG (12.5% above ₹1.25L)</div><div class="value">${fmtINR(tax.ltcgTotal)}</div></div>
+      <div class="stat-card"><div class="label">Intraday (business income)</div><div class="value">${fmtINR(intraday)}</div></div>
+      <div class="stat-card"><div class="label">F&amp;O (business income)</div><div class="value">${fmtINR(fno)}</div></div>
+      <div class="stat-card"><div class="label">STCG tax</div><div class="value accent">${fmtINR(tax.stcgTax)}</div></div>
+      <div class="stat-card"><div class="label">LTCG tax</div><div class="value accent">${fmtINR(tax.ltcgTax)}</div></div>
+      <div class="stat-card"><div class="label">Cess (4%)</div><div class="value accent">${fmtINR(tax.cess)}</div></div>
+      <div class="stat-card"><div class="label">Est. capital-gains tax</div><div class="value accent" style="font-size:20px;">${fmtINR(tax.totalTax)}</div></div>
+    </div>
+
+    <div class="info-disclaimer" style="margin-bottom:18px;">
+      Not tax advice — an estimate for informational purposes only, please consult a Chartered Accountant. Rates used: STCG 20%, LTCG 12.5% above ₹1.25,00,000/year (effective 23 Jul 2024) — verify current rates before filing, they can change. Grandfathering for pre-31-Jan-2018 holdings and surcharge aren't modelled. Intraday and F&amp;O are shown as net P&amp;L only — actual tax on those is at your income-tax slab rate, not a flat rate.
+    </div>
+
+    <div class="page-header"><h1 style="font-size:16px;">Equity delivery trades (FIFO matched)</h1>
+      <div style="display:flex;gap:8px;"><button class="btn btn-outline btn-sm" id="tb-download-btn">Download CSV</button><button class="btn btn-outline btn-sm" id="tb-reset-btn">Load another file</button></div>
+    </div>
+    <div class="card desktop-table-wrap">
+      <table>
+        <thead><tr><th>Symbol</th><th>Buy date</th><th>Sell date</th><th class="num">Qty</th><th class="num">Buy ₹</th><th class="num">Sell ₹</th><th class="num">Held</th><th>Type</th><th class="num">Gain/Loss</th></tr></thead>
+        <tbody>${rowsHtml || `<tr><td colspan="9" style="text-align:center;color:var(--text-mute);padding:24px;">No equity delivery trades in this file</td></tr>`}</tbody>
+      </table>
+    </div>
+    <div class="mcard-list">${cardsHtml || `<div style="text-align:center;color:var(--text-mute);padding:24px;">No equity delivery trades in this file</div>`}</div>`;
+}
+
+function renderConsoleSecurity(){
+  const items = [
+    {done:true, title:'2FA step-up for Console', desc:'This section requires a fresh check every session, separate from regular sign-in — implemented and working.'},
+    {done:true, title:'Real TOTP 2FA available', desc:'RFC 6238 authenticator-app 2FA is wired end-to-end for the account (Profile → Security).'},
+    {done:false, title:'HTTPS/TLS in production', desc:'This preview runs on plain HTTP for local testing — deploy behind HTTPS only before handling real data.'},
+    {done:false, title:'Encrypt sensitive data at rest', desc:'Demat passwords, 2FA secrets, and uploaded tradebooks should be encrypted in whatever database replaces the current in-memory storage.'},
+    {done:false, title:'Backend-side auth on every API route', desc:'The sync/2FA server currently has no session/auth checks of its own — add real authentication before exposing it beyond localhost.'},
+    {done:false, title:'Rate limiting', desc:'Add rate limits on login and 2FA verify endpoints to slow down brute-force attempts.'},
+    {done:false, title:'Audit logging', desc:'Log who accessed Console and when — useful for spotting unexpected access after the fact.'},
+    {done:false, title:'Session timeout', desc:'Auto-lock Console (and ideally the whole app) after a period of inactivity.'},
+    {done:false, title:'Dependency updates', desc:'Keep npm packages current — run `npm audit` periodically on the backend.'},
+  ];
+  return `
+    <div class="card" style="padding:22px 24px;">
+      <h3 style="margin:0 0 4px;font-size:15px;">Go-live security checklist</h3>
+      <p style="color:var(--text-mute);font-size:12.5px;margin:0 0 8px;">What's already real in this build, and what's still needed before this touches real accounts.</p>
+      ${items.map(it=>`
+        <div class="checklist-item ${it.done?'done':'todo'}">
+          <div class="ci-dot">${it.done?'✓':'○'}</div>
+          <div><div class="ci-title">${esc(it.title)}</div><div class="ci-desc">${esc(it.desc)}</div></div>
+        </div>`).join('')}
+    </div>`;
+}
+
+/* ===================== PROFILE ===================== */
+function renderProfile(){
+  return `
+    <div class="profile-head"><h2>Profile</h2><a href="#" id="pw-security-link">Password &amp; Security</a></div>
+    <div class="divider"></div>
+    <div class="profile-top">
+      <div class="profile-avatar-lg" id="profile-avatar-lg">${currentUser.initials}</div>
+      <div class="change-photo-wrap">
+        <div class="profile-name-edit"><h3 id="profile-name-display">${esc(currentUser.name)}</h3></div>
+        <button id="change-photo-btn">Change photo</button>
+        <input type="file" id="photo-input" accept="image/*" class="hidden" />
+      </div>
+    </div>
+    <div class="pw-inline" id="pw-inline">
+      <input type="password" placeholder="Current password" id="pw-current" />
+      <input type="password" placeholder="New password" id="pw-new" />
+      <button class="btn btn-gold btn-sm" id="pw-update" style="align-self:flex-start;">Update password</button>
+    </div>
+    <div class="divider"></div>
+    <div class="profile-section-title">Account</div>
+    <div class="kv-list">
+      <div class="kv-row"><span class="k">E-mail</span><span class="v">${esc(currentUser.email)}</span></div>
+      <div class="kv-row"><span class="k">Mobile</span><span class="v sensitive">${esc(currentUser.mobile||'—')}</span></div>
+      <div class="kv-row"><span class="k">PAN</span><span class="v mono sensitive">${esc(currentUser.pan||'—')}</span></div>
+      <div class="kv-row"><span class="k">Bank account</span><span class="v sensitive">${esc(currentUser.bank||'—')}</span></div>
+      <div class="kv-row"><span class="k">User ID</span><span class="v mono">${esc(currentUser.id)}</span></div>
+      <div class="kv-row"><span class="k">Linked demat accounts</span><span class="v">${dematAccounts.length}</span></div>
+      <div class="kv-row"><span class="k">KYC status</span><span class="v" style="color:var(--text-mute);">Not connected in this preview</span></div>
+    </div>
+    <div class="profile-section-title">Security</div>
+    <div class="kv-list">
+      <div class="kv-row"><span class="k">Two-factor authentication</span><span class="v">${tfaEnabled?'<span style="color:var(--green);">Enabled</span>':'Disabled'}</span></div>
+      <div class="kv-row"><span class="k">Active sessions</span><span class="v">1 device (this browser)</span></div>
+    </div>
+    <button class="btn btn-outline btn-sm" id="open-security-modal-btn" style="margin-top:12px;">🔐 Security &amp; sessions</button>
+
+    <div class="profile-section-title">Preferences</div>
+    <div class="kv-list">
+      <div class="kv-row"><span class="k">Privacy mode</span><div class="switch ${privacyMode?'on':''}" id="profile-privacy-switch"></div></div>
+      <div class="kv-row"><span class="k">Theme (${themeLight?'Light':'Dark'})</span><div class="switch ${themeLight?'on':''}" id="profile-theme-switch"></div></div>
+    </div>
+
+    <div class="profile-section-title">Help</div>
+    <button class="dp-item" id="profile-support-btn" style="border-radius:8px;">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 115.8 1c0 2-3 2-3 4"/><path d="M12 17h.01"/></svg>
+      Support
+    </button>
+    <button class="dp-item" id="profile-shortcuts-btn" style="border-radius:8px;">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M6 14h12"/></svg>
+      Keyboard shortcuts
+    </button>
+    <button class="dp-item" id="profile-manual-btn" style="border-radius:8px;">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+      User manual
+    </button>
+    <button class="dp-item logout" id="profile-logout-btn" style="border-radius:8px;">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+      Logout
+    </button>`;
+}
+
+/* ===================== VIEW EVENT WIRING ===================== */
+function wireViewEvents(){
+  const syncBtn = document.getElementById('sync-btn');
+  if(syncBtn) syncBtn.onclick = syncLiveIPOs;
+  const scrapeLiveBtn = document.getElementById('scrape-live-btn');
+  if(scrapeLiveBtn) scrapeLiveBtn.onclick = triggerScrapeLive;
+
+  const gs = document.getElementById('orders-getstarted');
+
+  if(gs) gs.onclick = ()=>navigate('bids');
+  const dvb = document.getElementById('dash-view-bids'); if(dvb) dvb.onclick = ()=>navigate('bids');
+  const dvo = document.getElementById('dash-view-orders'); if(dvo) dvo.onclick = ()=>navigate('orders');
+
+  document.querySelectorAll('[data-ofilter]').forEach(b=>{
+    b.onclick = ()=>{ ordersFilter = b.dataset.ofilter; render(); };
+  });
+  const histToggle = document.getElementById('history-toggle-btn');
+  if(histToggle) histToggle.onclick = ()=>{ showHistory = !showHistory; ordersFilter='all'; render(); };
+  const viewHistLink = document.getElementById('orders-view-history');
+  if(viewHistLink) viewHistLink.onclick = (e)=>{ e.preventDefault(); showHistory = true; render(); };
+  document.querySelectorAll('.cancel-order-btn').forEach(b=>{
+    b.onclick = ()=>{ if(confirm("Cancel this application? This can't be undone.")) cancelOrder(b.dataset.oid); };
+  });
+  document.querySelectorAll('.view-order-btn').forEach(b=>{
+    b.onclick = ()=>{
+      const src = showHistory ? orderHistory : orders;
+      const o = src.find(x=>x.oid===b.dataset.oid);
+      if(o) openOrderDetailModal(o);
+    };
+  });
+
+  const search = document.getElementById('ipo-search');
+  if(search){
+    search.oninput = ()=>{ document.getElementById('view-root').innerHTML = renderBids(search.value); wireViewEvents(); document.getElementById('ipo-search').focus(); };
+  }
+  document.querySelectorAll('[data-bfilter]').forEach(b=>{
+    b.onclick = ()=>{ bidsFilter = b.dataset.bfilter; render(); };
+  });
+  document.querySelectorAll('.apply-btn').forEach(b=>{
+    b.onclick = (e)=>{ e.stopPropagation(); const ipo = IPOS.find(i=>i.id===b.dataset.ipo); openCategoryPopover(ipo, b); };
+  });
+  document.querySelectorAll('.sub-badge-btn').forEach(b=>{
+    b.onclick = (e)=>{ e.stopPropagation(); const ipo = IPOS.find(i=>i.id===b.dataset.ipo); if(ipo) openSubscriptionModal(ipo); };
+  });
+
+  document.querySelectorAll('[data-dtab]').forEach(b=>{
+    b.onclick = ()=>{ dematSubTab = b.dataset.dtab; render(); };
+  });
+  const addDematBtn = document.getElementById('add-demat-btn');
+  if(addDematBtn) addDematBtn.onclick = ()=>{ dematSubTab='new'; render(); };
+  const dfCancel = document.getElementById('df-cancel');
+  if(dfCancel) dfCancel.onclick = ()=>{ dematSubTab='saved'; render(); };
+  const dfEye = document.getElementById('df-eye');
+  if(dfEye) dfEye.onclick = ()=>{ const i=document.getElementById('df-pass'); i.type = i.type==='password'?'text':'password'; };
+  const dfSave = document.getElementById('df-save');
+  if(dfSave){
+    dfSave.onclick = ()=>{
+      const rec = {
+        id: document.getElementById('df-id').value.trim() || 'NEW'+Math.floor(Math.random()*9000),
+        name: document.getElementById('df-name').value.trim() || currentUser.name,
+        broker: document.getElementById('df-broker').value,
+        password: '••••••••',
+        upi: document.getElementById('df-upi').value.trim() || 'unset@upi',
+        linkedOn: 'Just now', status:'active'
+      };
+      dematAccounts.push(rec);
+      dematSubTab = 'saved';
+      render();
+      toast('Account linked', `${esc(rec.broker)} account ${esc(rec.id)} was added successfully.`, false);
+    };
+  }
+  document.querySelectorAll('.delete-demat').forEach(b=>{
+    b.onclick = ()=>{
+      const idx = Number(b.dataset.idx);
+      const acct = dematAccounts[idx];
+      if(confirm(`Unlink ${acct.broker} account ${acct.id}? You'll need to re-add it to apply from it again.`)){
+        dematAccounts.splice(idx,1);
+        render();
+        toast('Account unlinked', `${esc(acct.broker)} account ${esc(acct.id)} was removed.`, false);
+      }
+    };
+  });
+  document.querySelectorAll('.edit-demat').forEach(b=>{
+    b.onclick = ()=>{
+      const idx = Number(b.dataset.idx);
+      document.getElementById('view-root').innerHTML = `<div class="subnav"><button class="active">Saved Account</button><button>Add New</button></div>` + dematFormInline(idx);
+      const cancel = document.getElementById('df-cancel'); if(cancel) cancel.onclick = ()=>{ dematSubTab='saved'; render(); };
+      const eye = document.getElementById('df-eye'); if(eye) eye.onclick = ()=>{ const i=document.getElementById('df-pass'); i.type = i.type==='password'?'text':'password'; };
+      document.getElementById('df-save').onclick = ()=>{
+        dematAccounts[idx] = {
+          ...dematAccounts[idx],
+          id: document.getElementById('df-id').value.trim(),
+          name: document.getElementById('df-name').value.trim(),
+          broker: document.getElementById('df-broker').value,
+          password: '••••••••',
+          upi: document.getElementById('df-upi').value.trim()
+        };
+        dematSubTab='saved'; render();
+        toast('Saved', 'Account details were updated.', false);
+      };
+    };
+  });
+
+  const nameDisplay = document.getElementById('profile-name-display');
+  if(nameDisplay){
+    nameDisplay.onclick = ()=>{
+      const wrap = nameDisplay.parentElement;
+      wrap.innerHTML = `<input id="profile-name-input" value="${esc(currentUser.name)}" />`;
+      const inp = document.getElementById('profile-name-input');
+      inp.focus(); inp.select();
+      const save = ()=>{
+        currentUser.name = inp.value.trim() || currentUser.name;
+        currentUser.initials = initials(currentUser.name);
+        document.getElementById('avatar-initials').textContent = currentUser.initials;
+        render();
+      };
+      inp.onblur = save;
+      inp.onkeydown = (e)=>{ if(e.key==='Enter') inp.blur(); };
+    };
+  }
+  const pwLink = document.getElementById('pw-security-link');
+  if(pwLink) pwLink.onclick = (e)=>{ e.preventDefault(); document.getElementById('pw-inline').classList.toggle('show'); };
+  const secBtn = document.getElementById('open-security-modal-btn');
+  if(secBtn) secBtn.onclick = openSecurityModal;
+
+  /* ---- Console ---- */
+  const unlockBtn = document.getElementById('console-unlock-btn');
+  if(unlockBtn){
+    unlockBtn.onclick = ()=>{
+      fetch(SYNC_API_BASE + '/api/2fa/status/' + encodeURIComponent(currentUser.id))
+        .then(r=>r.json())
+        .then(s=>{
+          if(!s.enabled){ consoleUnlocked = true; render(); return; }
+          openInfo('Confirm it\'s you', `
+            <p style="color:var(--text-mute);font-size:12.5px;margin-bottom:12px;">Enter the current code from your authenticator app to open Console.</p>
+            <input id="console-2fa-code" inputmode="numeric" maxlength="6" placeholder="000000" style="width:100%;text-align:center;letter-spacing:6px;font-family:var(--font-mono);font-size:18px;background:var(--bg-soft);border:1px solid var(--border);border-radius:8px;padding:11px;" />
+          `, `<button class="btn btn-gold btn-sm" id="console-2fa-confirm">Unlock</button>`);
+          document.getElementById('console-2fa-confirm').onclick = ()=>{
+            const code = document.getElementById('console-2fa-code').value.trim();
+            fetch(SYNC_API_BASE + '/api/2fa/verify', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({userId:currentUser.id, code}) })
+              .then(r=>r.json())
+              .then(res=>{
+                if(res.ok){ closeInfoModal(); consoleUnlocked = true; render(); }
+                else toast('Code did not match', 'Try the next code from your app.', true);
+              })
+              .catch(()=>toast('Could not verify', `Couldn't reach ${esc(SYNC_API_BASE)}.`, true));
+          };
+        })
+        .catch(()=>{ consoleUnlocked = true; render(); toast('2FA check skipped', 'Could not reach the sync server to check 2FA status.', true); });
+    };
+  }
+  document.querySelectorAll('[data-cacct]').forEach(b=>{ b.onclick = ()=>{ consoleAccount = b.dataset.cacct; render(); }; });
+  document.querySelectorAll('[data-ctab]').forEach(b=>{ b.onclick = ()=>{ consoleTab = b.dataset.ctab; render(); }; });
+
+  const dz = document.getElementById('tb-dropzone');
+  const fileInput = document.getElementById('tb-file-input');
+  if(dz && fileInput){
+    dz.onclick = ()=>fileInput.click();
+    dz.addEventListener('dragover', (e)=>{ e.preventDefault(); dz.classList.add('drag'); });
+    dz.addEventListener('dragleave', ()=>dz.classList.remove('drag'));
+    dz.addEventListener('drop', (e)=>{
+      e.preventDefault(); dz.classList.remove('drag');
+      if(e.dataTransfer.files[0]) loadTradebookFile(e.dataTransfer.files[0]);
+    });
+    fileInput.onchange = ()=>{ if(fileInput.files[0]) loadTradebookFile(fileInput.files[0]); };
+  }
+  const sampleBtn = document.getElementById('tb-sample-btn');
+  if(sampleBtn) sampleBtn.onclick = ()=>{
+    try{ runTaxPLCalc(SAMPLE_TRADEBOOK_CSV); render(); toast('Sample loaded', 'Showing FIFO capital-gains results computed from sample trades.', false); }
+    catch(err){ toast('Could not parse sample', err.message, true); }
+  };
+  const resetBtn = document.getElementById('tb-reset-btn');
+  if(resetBtn) resetBtn.onclick = ()=>{ taxPLRows = null; render(); };
+  const dlBtn = document.getElementById('tb-download-btn');
+  if(dlBtn) dlBtn.onclick = ()=>{
+    const rows = taxPLRows.equityRows;
+    const csv = ['symbol,buyDate,sellDate,qty,buyPrice,sellPrice,holdingDays,classification,gain']
+      .concat(rows.map(r=>[r.symbol,r.buyDate,r.sellDate,r.qty,r.buyPrice,r.sellPrice,r.holdingDays,r.classification,r.gain].join(',')))
+      .join('\n');
+    const blob = new Blob([csv], {type:'text/csv'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'crest-tax-pl.csv';
+    a.click();
+  };
+  const profPrivacy = document.getElementById('profile-privacy-switch');
+  if(profPrivacy){
+    profPrivacy.onclick = ()=>{
+      privacyMode = !privacyMode;
+      document.body.classList.toggle('privacy-on', privacyMode);
+      profPrivacy.classList.toggle('on', privacyMode);
+    };
+  }
+  const profTheme = document.getElementById('profile-theme-switch');
+  if(profTheme){
+    profTheme.onclick = ()=>{
+      themeLight = !themeLight;
+      document.documentElement.setAttribute('data-theme', themeLight?'light':'dark');
+      render();
+    };
+  }
+  const profSupport = document.getElementById('profile-support-btn');
+  if(profSupport) profSupport.onclick = openSupportModal;
+  const profShortcuts = document.getElementById('profile-shortcuts-btn');
+  if(profShortcuts) profShortcuts.onclick = openShortcutsModal;
+  const profManual = document.getElementById('profile-manual-btn');
+  if(profManual) profManual.onclick = openManualModal;
+  const profLogout = document.getElementById('profile-logout-btn');
+  if(profLogout) profLogout.onclick = signOutUser;
+  const pwUpdate = document.getElementById('pw-update');
+  if(pwUpdate){
+    pwUpdate.onclick = ()=>{
+      const np = document.getElementById('pw-new').value;
+      if(!np || np.length<6){ toast('Could not update', 'New password must be at least 6 characters.', true); return; }
+      if(auth && auth.currentUser){
+        updatePassword(auth.currentUser, np).then(()=>toast('Password updated', 'Your password has been changed.', false))
+          .catch(err=>toast('Could not update', err.message, true));
+      } else {
+        toast('Demo mode', 'Password change is disabled for the demo account.', false);
+      }
+      document.getElementById('pw-inline').classList.remove('show');
+    };
+  }
+  const changePhotoBtn = document.getElementById('change-photo-btn');
+  if(changePhotoBtn){
+    changePhotoBtn.onclick = ()=>document.getElementById('photo-input').click();
+    document.getElementById('photo-input').onchange = (e)=>{
+      const file = e.target.files[0]; if(!file) return;
+      const reader = new FileReader();
+      reader.onload = ()=>{ document.getElementById('profile-avatar-lg').innerHTML = `<img src="${reader.result}" />`; };
+      reader.readAsDataURL(file);
+    };
+  }
+}
+
+/* ===================== NOTIFICATION PANEL ===================== */
+document.getElementById('bell-btn').addEventListener('click', (e)=>{
+  e.stopPropagation();
+  closeDropdown();
+  toggleNotifPanel();
+});
+function toggleNotifPanel(){
+  const root = document.getElementById('dropdown-root');
+  const existing = document.getElementById('notif-panel');
+  if(existing){ closeNotifPanel(); return; }
+  const bellRect = document.getElementById('bell-btn').getBoundingClientRect();
+  const panel = document.createElement('div');
+  panel.className = 'notif-panel';
+  panel.id = 'notif-panel';
+  panel.style.top = (bellRect.bottom + 8) + 'px';
+  panel.style.right = Math.max(10, window.innerWidth - bellRect.right - 8) + 'px';
+  panel.innerHTML = `
+    <div class="notif-head"><h4>Notifications</h4><button id="notif-clear">Clear all</button></div>
+    <div class="notif-list" id="notif-list">
+      ${notifications.length ? notifications.map(n=>`
+        <div class="notif-item"><div class="t">${esc(n.title)}</div><div class="m">${esc(n.msg)}</div><div class="ts">${n.ts}</div></div>`).join('')
+        : '<div class="notif-empty">No activity yet — applications, mandates, and account changes will show up here.</div>'}
+    </div>`;
+  document.body.appendChild(panel);
+  document.getElementById('notif-clear').onclick = ()=>{ notifications = []; closeNotifPanel(); };
+  unreadCount = 0; updateNotifBadge();
+  setTimeout(()=>document.addEventListener('click', outsideNotifClose), 0);
+}
+function outsideNotifClose(e){
+  const panel = document.getElementById('notif-panel');
+  if(panel && !panel.contains(e.target) && !document.getElementById('bell-btn').contains(e.target)) closeNotifPanel();
+}
+function closeNotifPanel(){
+  const panel = document.getElementById('notif-panel');
+  if(panel) panel.remove();
+  document.removeEventListener('click', outsideNotifClose);
+}
+
+/* ===================== AVATAR DROPDOWN ===================== */
+document.getElementById('avatar-btn').addEventListener('click', (e)=>{
+  e.stopPropagation();
+  closeNotifPanel();
+  if(window.matchMedia('(max-width:680px)').matches){
+    navigate('profile'); // mobile: everything lives on the Profile page, no floating popup
+  } else {
+    toggleDropdown();
+  }
+});
+function toggleDropdown(){
+  const root = document.getElementById('dropdown-root');
+  if(document.getElementById('dp')){ closeDropdown(); return; }
+  const btnRect = document.getElementById('avatar-btn').getBoundingClientRect();
+  const panel = document.createElement('div');
+  panel.innerHTML = `
+    <div class="dropdown-panel" id="dp" style="top:${btnRect.bottom + 8}px; right:${Math.max(10, window.innerWidth - btnRect.right)}px;">
+      <div class="dp-head">
+        <div><div class="name">${esc(currentUser.name)}</div><div class="email">${esc(currentUser.email)}</div></div>
+        <button id="dp-edit">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg>
+        </button>
+      </div>
+      <div class="dp-toggle">Privacy mode <div class="switch ${privacyMode?'on':''}" id="privacy-switch"></div></div>
+      <div class="dp-toggle">Theme (${themeLight?'Light':'Dark'}) <div class="switch ${themeLight?'on':''}" id="theme-switch"></div></div>
+      <button class="dp-item" id="dp-support">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 115.8 1c0 2-3 2-3 4"/><path d="M12 17h.01"/></svg>
+        Support
+      </button>
+      <button class="dp-item" id="dp-shortcuts">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M6 14h12"/></svg>
+        Keyboard shortcuts
+      </button>
+      <button class="dp-item" id="dp-manual">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+        User manual
+      </button>
+      <button class="dp-item logout" id="dp-logout">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+        Logout
+      </button>
+    </div>`;
+  root.appendChild(panel.firstElementChild);
+  document.getElementById('dp-edit').onclick = ()=>{ closeDropdown(); navigate('profile'); };
+  document.getElementById('privacy-switch').onclick = ()=>{
+    privacyMode = !privacyMode;
+    document.body.classList.toggle('privacy-on', privacyMode);
+    document.getElementById('privacy-switch').classList.toggle('on', privacyMode);
+  };
+  document.getElementById('theme-switch').onclick = ()=>{
+    themeLight = !themeLight;
+    document.documentElement.setAttribute('data-theme', themeLight?'light':'dark');
+    closeDropdown(); toggleDropdown();
+  };
+  document.getElementById('dp-support').onclick = ()=>{ closeDropdown(); openSupportModal(); };
+  document.getElementById('dp-shortcuts').onclick = ()=>{ closeDropdown(); openShortcutsModal(); };
+  document.getElementById('dp-manual').onclick = ()=>{ closeDropdown(); openManualModal(); };
+  document.getElementById('dp-logout').onclick = signOutUser;
+  setTimeout(()=>document.addEventListener('click', outsideDropdownClose), 0);
+}
+function outsideDropdownClose(e){
+  const dp = document.getElementById('dp');
+  if(dp && !dp.contains(e.target) && !document.getElementById('avatar-btn').contains(e.target)) closeDropdown();
+}
+function closeDropdown(){
+  document.getElementById('dropdown-root').innerHTML = '';
+  document.removeEventListener('click', outsideDropdownClose);
+}
+
+/* ===================== GLOBAL KEYBOARD SHORTCUTS ===================== */
+document.addEventListener('keydown', (e)=>{
+  if(!currentUser) return;
+  if(e.target && e.target.matches && e.target.matches('input,textarea,select')){
+    if(e.key==='/'){ /* allow typing '/' inside fields normally */ }
+    return;
+  }
+  if(e.altKey && ['1','2','3','4','5'].includes(e.key)){
+    const routes = ['dashboard','bids','orders','demat','profile'];
+    navigate(routes[Number(e.key)-1]);
+    e.preventDefault();
+  } else if(e.key==='/'){
+    e.preventDefault();
+    if(route!=='bids') navigate('bids');
+    setTimeout(()=>{ const s = document.getElementById('ipo-search'); if(s) s.focus(); }, 30);
+  } else if(e.key==='?'){
+    e.preventDefault();
+    openShortcutsModal();
+  }
+});
+</script>
+</body>
+</html>

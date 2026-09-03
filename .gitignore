@@ -1,0 +1,20 @@
+# Sensitive credentials -- NEVER commit these
+vault.key
+config.vault
+config.yaml
+
+# Local logs and generated data
+applications_log.xlsx
+crucial_popups.log
+local_diagnosis_log.jsonl
+2fa_store.json
+ipo_exchange_cache.json
+
+# Python environment
+venv/
+__pycache__/
+*.pyc
+
+# OS/editor clutter
+.DS_Store
+Thumbs.db
